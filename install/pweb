@@ -126,12 +126,6 @@ fun_atpweb () {
 [[ ! -d /bin/ppweb ]] && mkdir /bin/ppweb
 cd /bin/ppweb || exit
 rm *.sh ver* > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/ubuinst.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/restbanco.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/empresa.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/updatepainel.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/updatepainelarm.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/botpweb.sh > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verifatt.sh > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verpweb > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verweb > /dev/null 2>&1
@@ -211,8 +205,6 @@ fun_tst () {
     testevelocidade --share > speed
     fi
 }
-echo -e "PAINELWEB GESTOR-SSH" | figlet
-echo -e "                              \033[1;31mBy: \033[1;32m@nandoslayer\033[1;36m"
 echo ""
 echo -e "\033[1;37m◆═════════════════════════════════════════════════════════════◆\033[0m"
 echo -e " \E[44;1;37m              🚀 TESTE DE VELOCIDADE DA VPS 🚀               \E[0m"
@@ -246,8 +238,6 @@ rm -rf /var/www/html
 [[ ! -d /var/www/html ]] && mkdir /var/www/html
 }
 painel_att () {
-echo -e "PAINELWEB GESTOR-SSH" | figlet
-echo -e "                              \033[1;31mBy: \033[1;32m@nandoslayer\033[1;36m"
 echo ""
 echo -e "\033[1;36mSELECIONE O MODO COMPATÍVEL CONFORME SUA VPS SSH: \033[1;37m"
 echo ""
@@ -258,9 +248,203 @@ echo ""
 echo -ne "\033[1;36mSelecione uma pção: \033[1;37m"
 read resposta
 if [[ "$resposta" = '1' ]]; then
-    /bin/ppweb/updatepainel.sh
+clear
+echo ""
+echo -e "           \033[1;33m● \033[1;32mATUALIZANDO LINUX, PODE DEMORAR \033[1;33m●\033[0m"
+fun_update () {
+    apt-get update -y > /dev/null 2>&1 
+	apt-get install figlet -y > /dev/null 2>&1
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+    chmod +x /usr/local/bin/composer
+}
+##################################
+fun_bar 'fun_update'
+echo ""
+clear
+IP=$(wget -qO- ipv4.icanhazip.com)
+echo "America/Sao_Paulo" > /etc/timezone
+ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
+dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
+IP=$(wget -qO- ipv4.icanhazip.com)
+clear
+echo -e "\E[44;1;37m    ATUALIZANDO O PAINEL MODO PADRÃO X86_64     \E[0m"
+echo ""
+echo -e "WEB GESTOR-SSH" | figlet
+echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo ""
+clear
+senha=$(cut -d"'" -f2 /var/www/html/pages/system/pass.php)
+empresaatual=$(cut -d"'" -f2 /var/www/html/empresa)
+echo ""
+echo -e "           \033[1;33m● \033[1;32mFINALIZANDO A ATUALIZAÇÃO, PODE DEMORAR \033[1;33m● \033[1;33mAGUARDE...\033[0m"
+cd /var/www/html || exit
+find /var/www/html/ -iname "*.php" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.html" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.html" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.svg" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.jpg" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.png" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.png" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.lock" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+wget https://github.com/nandoslayer/pweb/raw/painel/install/gestorssh.zip > /dev/null 2>&1
+sleep 1
+unzip -o gestorssh.zip > /dev/null 2>&1
+rm -rf gestorssh.zip index.html > /dev/null 2>&1
+(echo yes; echo yes; echo yes; echo yes) | composer install > /dev/null 2>&1
+(echo yes; echo yes; echo yes; echo yes) | composer require phpseclib/phpseclib:~2.0 > /dev/null 2>&1
+ln -s /usr/share/phpmyadmin/ /var/www/html > /dev/null 2>&1
+chmod 777 -R /var/www/html > /dev/null 2>&1
+sed -i "s;49875103u;$senha;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
+sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
+sleep 1
+if [[ -e "/var/www/html/pages/system/pass.php" ]]; then
+sed -i "s;1020;$senha;g" /var/www/html/pages/system/pass.php > /dev/null 2>&1
+fi
+##################################
+clear
+crontab -l > cronset > /dev/null 2>&1
+echo "
+@reboot /etc/autostart
+* * * * * /etc/autostart
+0 */12 * * * cd /var/www/html/pages/system/ && bash cron.backup.sh && cd /root
+5 */6 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
+* * * * * cd /var/www/html/pages/system/ && bash cron.userteste.sh && cd /root
+2 */6 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php
+@daily /usr/bin/php /var/www/html/pages/system/cron.rev.php
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.ssh.php
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.php
+@monthly /usr/bin/php /var/www/html/pages/system/cron.limpeza.php" > cronset
+crontab cronset && rm cronset > /dev/null 2>&1
+##################################
+clear
+cd || exit
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/empresa > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/home.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/login.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/home.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/login.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/termos.php > /dev/null 2>&1
+echo ""
+service apache2 restart > /dev/null 2>&1
+echo -e "\E[44;1;32m    PAINEL ATUALIZADO COM SUCESSO     \E[0m"
+echo ""
+echo -e "WEB GESTOR-SSH" | figlet
+echo ""
+echo -e "\033[1;36m PAINEL WEB DIGITE ESSE IP NO NAVEGADOR:\033[1;37m http://$IP/admin\033[0m"
+echo ""
+echo -e "\033[1;36m LOJA DE APPS:\033[1;37m http://$IP/apps\033[0m"
+echo ""
+echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@nandoslayer\033[0m"
+echo ""
+echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar ao \033[1;32mPWEB! \033[0m"; read
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
 elif [[ "$resposta" = '2' ]]; then
-/bin/ppweb/updatepainelarm.sh
+clear
+echo ""
+echo -e "           \033[1;33m● \033[1;32mATUALIZANDO LINUX, PODE DEMORAR \033[1;33m●\033[0m"
+fun_update () {
+    apt-get update -y > /dev/null 2>&1 
+	apt-get install figlet -y > /dev/null 2>&1
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+    chmod +x /usr/local/bin/composer
+}
+##################################
+fun_bar 'fun_update'
+echo ""
+clear
+IP=$(wget -qO- ipv4.icanhazip.com)
+echo "America/Sao_Paulo" > /etc/timezone
+ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
+dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
+IP=$(wget -qO- ipv4.icanhazip.com)
+clear
+echo -e "\E[44;1;37m    ATUALIZANDO O PAINEL WEB GESTOR-SSH MODO COMPATÍVEL COM ARM     \E[0m"
+echo ""
+echo -e "WEB GESTOR-SSH" | figlet
+echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo ""
+clear
+senha=$(cut -d"'" -f2 /var/www/html/pages/system/pass.php)
+empresaatual=$(cut -d"'" -f2 /var/www/html/empresa)
+echo ""
+echo -e "           \033[1;33m● \033[1;32mFINALIZANDO A ATUALIZAÇÃO, PODE DEMORAR \033[1;33m● \033[1;33mAGUARDE...\033[0m"
+cd /var/www/html || exit
+find /var/www/html/ -iname "*.php" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.html" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.html" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.svg" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.jpg" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.png" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.png" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+find /var/www/html/ -iname "*.lock" -type f -exec rm -rfv {} \; > /dev/null 2>&1
+wget https://github.com/nandoslayer/pweb/raw/painel/install/gestorssharm.zip > /dev/null 2>&1
+sleep 1
+unzip -o gestorssharm.zip > /dev/null 2>&1
+rm -rf gestorssharm.zip index.html > /dev/null 2>&1
+(echo yes; echo yes; echo yes; echo yes) | composer install > /dev/null 2>&1
+(echo yes; echo yes; echo yes; echo yes) | composer require phpseclib/phpseclib:~2.0 > /dev/null 2>&1
+ln -s /usr/share/phpmyadmin/ /var/www/html > /dev/null 2>&1
+chmod 777 -R /var/www/html > /dev/null 2>&1
+sed -i "s;49875103u;$senha;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
+sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
+sleep 1
+if [[ -e "/var/www/html/pages/system/pass.php" ]]; then
+sed -i "s;1020;$senha;g" /var/www/html/pages/system/pass.php > /dev/null 2>&1
+fi
+##################################
+cd || exit
+clear
+crontab -l > cronset > /dev/null 2>&1
+echo "
+@reboot /etc/autostart
+* * * * * /etc/autostart
+0 */12 * * * cd /var/www/html/pages/system/ && bash cron.backup.sh && cd /root
+5 */6 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
+* * * * * cd /var/www/html/pages/system/ && bash cron.userteste.sh && cd /root
+2 */6 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php
+@daily /usr/bin/php /var/www/html/pages/system/cron.rev.php
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.ssh.php
+* * * * * /usr/bin/php /var/www/html/pages/system/cron.php
+@monthly /usr/bin/php /var/www/html/pages/system/cron.limpeza.php" > cronset
+crontab cronset && rm cronset > /dev/null 2>&1
+##################################
+clear
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/empresa > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/home.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/login.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/home.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/login.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/index.php > /dev/null 2>&1
+sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/termos.php > /dev/null 2>&1
+echo ""
+service apache2 restart > /dev/null 2>&1
+echo -e "\E[44;1;32m    PAINEL ATUALIZADO COM SUCESSO     \E[0m"
+echo ""
+echo -e "WEB GESTOR-SSH" | figlet
+echo ""
+echo -e "\033[1;36m PAINEL WEB DIGITE ESSE IP NO NAVEGADOR:\033[1;37m http://$IP/admin\033[0m"
+echo ""
+echo -e "\033[1;36m LOJA DE APPS:\033[1;37m http://$IP/apps\033[0m"
+echo ""
+echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@nandoslayer\033[0m"
+echo ""
+echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar ao \033[1;32mPWEB! \033[0m"; read
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
     else
  echo ""
     echo -e "\033[1;31mOpção inválida !\033[0m"
@@ -269,20 +453,226 @@ elif [[ "$resposta" = '2' ]]; then
 fi
 }
 painel_rest () {
-/bin/ppweb/restbanco.sh
+clear
+mkdir /root/restaurar > /dev/null 2>&1
+clear
+echo ""
+echo -e "\033[1;33mRESTAURAR BANCO DE DADOS DO PAINELWEB GESTOR-SSH!\033[0m" 
+echo ""
+echo -e "\n\033[1;33mÉ NECESSÁRIO O PAINEL INSTALADO E O\nARQUIVO (\033[1;32msshplus.sql.bz2\033[1;33m) NA PASTA (root/restaurar)!\033[0m\n"
+echo ""
+echo -ne "\033[1;32mDE UM ENTER PRA CONTINUAR...\033[0m"; read -r
+
+[[ ! -e /var/www/html/pages/system/pass.php ]] && {
+echo -e "\n\033[1;31mO PAINEL NÃO ESTÁ INSTALADO!\033[0m"
+echo ""
+sleep 3
+echo -e "\033[1;31mRETORNANDO...\033[0m"
+sleep 3
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
+}
+
+[[ ! -e /root/restaurar/sshplus.sql.bz2 ]] && {
+echo -e "\n\033[1;31mARQUIVO (\033[1;32msshplus.sql.bz2\033[1;31m) NÃO ENCONTRADO!\033[0m"
+echo ""
+sleep 3
+echo -e "\033[1;31mRETORNANDO...\033[0m"
+sleep 3
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
+}
+
+passdb=$(cut -d"'" -f2 /var/www/html/pages/system/pass.php)
+[[ $(mysql -h localhost -u root -p$passdb -e "show databases" | grep -wc sshplus) == '0' ]] && {
+echo -e "\n\033[1;31mSEU PAINELWEB NÃO É COMPATÍVEL!\033[0m"
+echo ""
+sleep 3
+echo -e "\033[1;31mRETORNANDO...\033[0m"
+sleep 3
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
+}
+
+bunzip2 /root/restaurar/sshplus.sql.bz2
+mysql -h localhost -u root -p$passdb -e "drop database sshplus"
+mysql -h localhost -u root -p$passdb -e 'CREATE DATABASE sshplus'
+mysql -h localhost -u root -p$passdb --default_character_set utf8 sshplus < /root/restaurar/sshplus.sql
+echo ""
+echo -e "\n\033[1;32mDADOS RESTAURADO COM SUCESSO!\033[0m"
+echo ""
+sleep 3
+echo -e "\033[1;31mRETORNANDO...\033[0m"
+rm -rf /root/restaurar > /dev/null 2>&1
+sleep 3
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
 }
 painel_empresa () {
-/bin/ppweb/empresa.sh
+clear
+empresaatual=$(cut -d"'" -f2 /var/www/html/empresa)
+echo -e "PAINELWEB GESTOR-SSH" | figlet
+echo -e "                              \033[1;31mBy: \033[1;32m@nandoslayer\033[1;36m"
+echo ""
+echo -e "\E[44;1;37m    ALTERAR NOME DA LOGO     \E[0m"
+echo ""
+echo -e "\E[44;1;37m    Aqui é definido o nome da logo     \E[0m"
+echo ""
+echo ""
+echo -e "\033[1;36m NOME DA LOGO ATUAL:\033[1;37m $empresaatual\033[0m"
+echo ""
+echo -ne "\033[1;32m INFORME O NOVO NOME DA LOGO\033[1;37m: "; read -r empresa
+echo ""
+echo -e "   \033[1;32mOK\033[1;37m"
+echo ""
+cd || exit
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/empresa > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/home.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/index.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/login.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/admin/home.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/admin/index.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/admin/login.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/apps/index.php > /dev/null 2>&1
+sed -i "s;$empresaatual;$empresa;g" /var/www/html/apps/termos.php > /dev/null 2>&1
+echo ""
+service apache2 restart > /dev/null 2>&1
+cat /dev/null > ~/.bash_history && history -c
+clear
+pweb
+exit;
 }
 #BOT TELEGRAM
 bot_telegram () {
-/bin/ppweb/botpweb.sh
+clear
+fun_att_api () {
+  echo ""
+  echo -e "\033[1;31mAGUARDE \033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
+  sleep 3
+  clear
+  if ps x | grep "bot_painel"|grep -v grep 1>/dev/null 2>/dev/null; then
+    pidbot_painel=$(ps x|grep "bot_painel"|awk -F "pts" {'print $1'})
+    kill -9 $pidbot_painel 1>/dev/null 2>/dev/null
+    screen -wipe 1>/dev/null 2>/dev/null
+    sleep 2
+    wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
+    wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
+	chmod 777 -R /bin/ppweb > /dev/null 2>&1
+  fi
+  cd $HOME || exit
+  echo ""
+  echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"
+  sleep 3
+  time_reboot "10"
+}
+fun_botOnOff() {
+    [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) = '0' ]] && {
+       clear
+       echo ""
+       echo -e "\E[44;1;37m              INSTALADOR BOT PWEB                 \E[0m\n"
+	   echo -e "                \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
+	   echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
+       echo -e "\n\033[1;32m1° \033[1;37m- \033[1;33mPELO SEU TELEGRAM ACESSE OS SEGUINTES BOT\033[1;37m:\033[0m"
+       echo -e "\n\033[1;32m2° \033[1;37m- \033[1;33mBOT \033[1;37m@BotFather \033[1;33mCRIE O SEU BOT \033[1;31mOPÇÃO: \033[1;37m/newbot\033[0m"
+       echo -e "\n\033[1;32m3° \033[1;37m- \033[1;33mBOT \033[1;37m@userinfobot \033[1;33mE PEGUE SEU ID \033[1;31mOPÇÃO: \033[1;37m/id\033[0m"
+       echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
+       echo ""
+        echo -ne "\033[1;32mINFORME SEU TOKEN:\033[1;37m "
+        read tokenbot
+        echo ""
+        echo -ne "\033[1;32mINFORME SEU ID:\033[1;37m "
+        read iduser
+        clear
+        echo -e "\033[1;32mINICIANDO BOT PWEB \033[0m\n"
+        fun_bot1() {
+            [[ ! -e "/bin/ppweb/apibot" ]] && {
+				wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
+                wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
+				chmod 777 -R /bin/ppweb > /dev/null 2>&1
+			}
+          cd /bin/ppweb
+            screen -dmS bot_painel ./bot $tokenbot $iduser >/dev/null 2>&1
+            [[ $(grep -wc "bot_painel" /etc/autostart) = '0' ]] && {
+                echo -e "ps x | grep 'bot_painel' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_painel ./bot $tokenbot $iduser && cd $HOME" >>/etc/autostart
+            } || {
+                sed -i '/bot_painel/d' /etc/autostart
+                echo -e "ps x | grep 'bot_painel' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_painel ./bot $tokenbot $iduser && cd $HOME" >>/etc/autostart
+            }
+            cd $HOME || exit
+        }
+        fun_bar 'fun_bot1'
+        [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) != '0' ]] && echo -e "\n\033[1;32m BOT PWEB ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
+        sleep 2
+        bot_telegram
+    } || {
+        clear
+        echo -e "\033[1;32mDESATIVANDO BOT PWEB... \033[0m\n"
+        fun_bot2() {
+            screen -r -S "bot_painel" -X quit
+            screen -wipe 1>/dev/null 2>/dev/null
+            [[ $(grep -wc "bot_painel" /etc/autostart) != '0' ]] && {
+                sed -i '/bot_painel/d' /etc/autostart
+            }
+            sleep 1
+        }
+        fun_bar 'fun_bot2'
+        echo -e "\n\033[1;32m \033[1;31mBOT PWEB DESATIVADO! \033[0m"
+        sleep 2
+        bot_telegram
+    }
+}
+
+fun_instbot() {
+	stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOT" || echo -e "\033[1;32mATIVAR BOT")
+    echo ""
+    echo -e "\E[44;1;37m            GERENCIAR BOT PWEB               \E[0m\n"
+	echo -e "             \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
+    echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
+    echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33m$stsbot \033[0m"
+    echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOT PWEB\033[0m"
+    echo -e "\033[1;31m[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
+    echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo ""
+tput civis
+echo -ne "\033[1;32mOQUE DESEJA FAZER \033[1;33m?\033[1;31m?\033[1;37m "; read x
+tput cnorm
+
+clear
+case $x in
+
+1|01)
+fun_botOnOff
+exit;
+;;
+2|02)
+fun_att_api
+exit;
+;;
+0|00)
+pweb
+exit;
+;;
+*)
+echo -e "\033[1;31mOpção inválida...\033[0m"
+sleep 1
+clear
+bot_telegram
+;;
+esac
+}
+fun_instbot
 }
 #SENHA ROOT
 senha_root () {
- clear
-echo -e "PAINELWEB GESTOR-SSH" | figlet
-echo -e "                              \033[1;31mBy: \033[1;32m@nandoslayer\033[1;36m"
+clear
 echo ""
 echo -e "\E[44;1;65m    ALTERANDO SENHA ROOT     \E[0m"
 echo ""
@@ -318,8 +708,6 @@ pweb
 }
 oracl() {
     clear
-    echo -e "PAINELWEB GESTOR-SSH" | figlet
-    echo -e "                              \033[1;31mBy: \033[1;32m@nandoslayer\033[1;36m"
     echo ""
     msg -bar
     msg -azu "		FIREWALL ORACLE/AWS/AZR"
@@ -504,6 +892,7 @@ oracludp() {
 }
 att_pweb () {
 clear
+echo ""
 echo -e "\E[41;1;37m         BAIXANDO ULTIMA VERSÃO        \E[0m"
 echo -e " "
 echo -ne "\033[1;33m[\033[1;31m ! \033[1;33m] \033[1;31mATUALIZANDO"; fun_prog 'fun_atpweb'
@@ -518,8 +907,9 @@ echo ""
 echo -e "\033[1;31m \033[1;33mCOMANDO PRINCIPAL: \033[1;32mpweb\033[0m"
 echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@nandoslayer\033[0m"
 echo ""
-echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar ao \033[1;32mPWEB! \033[0m"; read
+echo -ne "\n\033[1;31mENTER \033[1;33mPARA RETORNAR AO \033[1;32mPWEB! \033[0m"; read
 pweb
+exit;
 }
 
 while true $x != "ok"
@@ -533,9 +923,9 @@ verp=$(cat /bin/ppweb/verpweb) &>/dev/null
 verw=$(cat /bin/ppweb/verweb) &>/dev/null
 verap=$(cat /bin/ppweb/attpweb) &>/dev/null
 veraw=$(cat /bin/ppweb/attweb) &>/dev/null
-echo "America/Sao_Paulo" > /etc/timezone
-ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-dpkg-reconfigure --frontend noninteractive tzdata
+echo "America/Sao_Paulo" > /etc/timezone) &>/dev/null
+ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime) &>/dev/null
+dpkg-reconfigure --frontend noninteractive tzdata) &>/dev/null
 clear
 echo -e "\033[1;37m┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\033[0m"
 echo -e "\033[1;37m┃                       \033[38;5;118mPAINEL \033[38;5;190mGESTOR\033[38;5;197m-\033[38;5;164mSS\033[38;5;203mH\033[38;5;197m\033[1;37m                      ┃\E[0m"
@@ -573,7 +963,7 @@ echo -ne "\033[1;37m┗━┫\033[1;32mO QUE DESEJA FAZER \033[1;31m? "; read -r
 
 case "$x" in 
    1 | 01)
-   att_pweb
+   painel_att
    exit;
    ;;
    2 | 02)
@@ -589,7 +979,7 @@ case "$x" in
    exit;
    ;;
    5 | 05)
-   fun_atpweb
+   att_pweb
    exit;
    ;;
    6 | 06)
