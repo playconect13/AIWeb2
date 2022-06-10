@@ -1,5 +1,5 @@
 #!/bin/bash
- if [ `whoami` != 'root' ] 
+ if [ $(whoami) != 'root' ] 
  then
  echo -e "\e[1;31mPARA PODER USAR O INSTALADOR VOCÊ PRECISA SER ROOT\nVOCÊ NÃO SABE INICIAR COMO ROOT?\nDIGITE ESTE COMANDO NO TERMINAL ( sudo -i )\e[0m"
 rm * 
@@ -368,3 +368,4 @@ sed -i "s;upload_max_filesize = 2M;upload_max_filesize = 64M;g" /etc/php/7.4/apa
 sed -i "s;post_max_size = 8M;post_max_size = 64M;g" /etc/php/7.4/apache2/php.ini > /dev/null 2>&1
 cat /dev/null > ~/.bash_history && history -c
 clear
+}
