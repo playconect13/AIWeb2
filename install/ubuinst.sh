@@ -341,10 +341,10 @@ cron_set
 fun_swap
 tst_bkp
 clear
-echo -e "\033[1;32mPAINEL INSTALADO COM SUCESSO!"
-echo ""
-echo -e "WEB GESTOR-SSH" | figlet
+echo -e "\033[1;36mPAINELWEB \033[1;33mGESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo ""
+echo -e "\033[1;32mPAINEL INSTALADO COM SUCESSO!"
 echo ""
 echo -e "\033[1;36m SEU PAINEL:\033[1;37m http://$IP/admin\033[0m"
 echo -e "\033[1;36m USUÁRIO:\033[1;37m admin\033[0m"
