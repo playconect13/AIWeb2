@@ -172,7 +172,7 @@ comando[0]="$1"
 comando[1]="$2"
  (
 [[ -e $HOME/fim ]] && rm $HOME/fim
-[[ ! -d /etc/SSHPlus ]] && rm -rf /bin/menu
+[[ ! -d $HOME/speed ]] && rm -rf $HOME/speed
 ${comando[0]} > /dev/null 2>&1
 ${comando[1]} > /dev/null 2>&1
 touch $HOME/fim
@@ -267,6 +267,7 @@ ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 IP=$(wget -qO- ipv4.icanhazip.com)
 clear
+echo ""
 echo -e "\E[44;1;37m    ATUALIZANDO O PAINEL MODO PADRÃO X86_64     \E[0m"
 echo ""
 echo -e "WEB GESTOR-SSH" | figlet
@@ -332,7 +333,7 @@ echo ""
 service apache2 restart > /dev/null 2>&1
 echo -e "\E[44;1;32m    PAINELWEB ATUALIZADO COM SUCESSO     \E[0m"
 echo ""
-echo -e "WEB GESTOR-SSH" | figlet
+echo -e "PAINELWEB GESTOR-SSH" | figlet
 echo ""
 echo -e "\033[1;36m PAINEL WEB DIGITE ESSE IP NO NAVEGADOR:\033[1;37m http://$IP/admin\033[0m"
 echo ""
@@ -366,9 +367,10 @@ ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 IP=$(wget -qO- ipv4.icanhazip.com)
 clear
+echo ""
 echo -e "\E[44;1;37m    ATUALIZANDO O PAINELWEB GESTOR-SSH MODO COMPATÍVEL COM ARM     \E[0m"
 echo ""
-echo -e "WEB GESTOR-SSH" | figlet
+echo -e "PAINELWEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
 echo ""
 clear
@@ -431,7 +433,7 @@ echo ""
 service apache2 restart > /dev/null 2>&1
 echo -e "\E[44;1;32m    PAINELWEB ATUALIZADO COM SUCESSO     \E[0m"
 echo ""
-echo -e "WEB GESTOR-SSH" | figlet
+echo -e "PAINELWEB GESTOR-SSH" | figlet
 echo ""
 echo -e "\033[1;36m PAINEL WEB DIGITE ESSE IP NO NAVEGADOR:\033[1;37m http://$IP/admin\033[0m"
 echo ""
@@ -660,7 +662,6 @@ exit;
 *)
 echo -e "\033[1;31mOpção inválida...\033[0m"
 sleep 1
-clear
 bot_telegram
 ;;
 esac
@@ -1008,13 +1009,13 @@ case "$x" in
    ;;
    0 | 00)
    echo -e "\033[1;31mSaindo...\033[0m"
-   sleep 2
+   sleep 1
    clear
    exit;
    ;;
    *)
    echo -e "\n\033[1;31mOpção inválida !\033[0m"
-   sleep 2
+   sleep 1
 esac
 done
 }
