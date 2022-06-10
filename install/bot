@@ -826,13 +826,13 @@ speed_test() {
     }
     rm /bin/ppweb/speed >/dev/null 2>&1
     ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-        --text "🚀 TESTANDO VELOCIDADE DO SERVIDOR"
+        --text "🚀 TESTANDO VELOCIDADE DO SERVIDOR 🚀"
     speedtest2 --share > speed
     png=$(cat speed | sed -n '5 p' |awk -F : {'print $NF'})
     down=$(cat speed | sed -n '7 p' |awk -F :  {'print $NF'})
     upl=$(cat speed | sed -n '9 p' |awk -F :  {'print $NF'})
     host=$(cat speed | sed -n '2 p' |awk -F :  {'print $NF'})
-    lnk=$(cat speed | sed -n '10 p' | awk {'print $NF'})
+    lnk=$(cat speed | sed -n '10 p' |awk -F :  {'print $NF'})
     local msg
     msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
     msg+="<b>🚀 VELOCIDADE DO SERVIDOR 🚀</b>\n"
