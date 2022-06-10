@@ -178,13 +178,7 @@ chmod 777 pweb > /dev/null 2>&1
 clear
 [[ ! -d /bin/ppweb ]] && mkdir /bin/ppweb
 cd /bin/ppweb || exit
-rm *.sh versao* > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/ubuinst.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/restbanco.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/empresa.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/updatepainel.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/updatepainelarm.sh > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/botpweb.sh > /dev/null 2>&1
+rm *.sh ver* > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verifatt.sh > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verpweb > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verweb > /dev/null 2>&1
