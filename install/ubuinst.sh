@@ -295,6 +295,9 @@ cd || exit
 sed -i "s;49875103u;$pwdroot;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 }
+install_start
+install_continue
+install_continue2
 IP=$(wget -qO- ipv4.icanhazip.com)
 echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
@@ -329,9 +332,6 @@ echo -e "\n\033[1;36mINICIANDO INSTALAÇÃO \033[1;33mAGUARDE..."
 sleep 3
 clear
 sleep 1
-install_start
-install_continue
-install_continue2
 inst_base
 phpmadm
 pconf
