@@ -123,11 +123,6 @@ fun_upgrade () {
     apt-get upgrade -y > /dev/null 2>&1
 }
 fun_atpweb () {
-cd /bin || exit
-rm pweb > /dev/null 2>&1
-wget https://github.com/nandoslayer/pweb/raw/painel/install/pweb > /dev/null 2>&1
-chmod 777 pweb > /dev/null 2>&1
-clear
 [[ ! -d /bin/ppweb ]] && mkdir /bin/ppweb
 cd /bin/ppweb || exit
 rm *.sh ver* > /dev/null 2>&1
@@ -140,6 +135,12 @@ wget https://github.com/nandoslayer/pweb/raw/painel/install/botpweb.sh > /dev/nu
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verifatt.sh > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verpweb > /dev/null 2>&1
 wget https://github.com/nandoslayer/pweb/raw/painel/install/verweb > /dev/null 2>&1
+cd /bin || exit
+rm pweb > /dev/null 2>&1
+wget https://github.com/nandoslayer/pweb/raw/painel/install/pweb > /dev/null 2>&1
+chmod 777 pweb > /dev/null 2>&1
+cd || exit 
+clear
 cat /dev/null > ~/.bash_history && history -c
 }
 autoexec () {
