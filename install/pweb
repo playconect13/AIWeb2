@@ -136,8 +136,6 @@ wget https://github.com/nandoslayer/pweb/raw/painel/install/pweb > /dev/null 2>&
 chmod 777 pweb > /dev/null 2>&1
 cd || exit 
 cat /dev/null > ~/.bash_history && history -c
-pweb
-exit;
 }
 autoexec () {
    if grep "pweb;" /etc/profile > /dev/null; then
