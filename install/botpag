@@ -3,13 +3,8 @@ clear
 #--------[ DESENVOLVIDO POR @nandoslayer ]-----------#
 source apibot
 touch lista
-[[ -z $1 ]] && {
-    clear && echo "INFORME O TOKEN" && exit
-}
 api_bot="APIBOT"
-# Seu Dominio
 dominio="DOMINIO"
-# Informações Server
 ip_server="IPSERVER"
 senha_server="SUASENHA"
 ShellBot.init --token "$api_bot" --monitor --flush --return map
