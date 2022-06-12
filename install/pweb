@@ -567,26 +567,110 @@ fun_att_api () {
   echo -e "\033[1;31mAGUARDE \033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
   sleep 3
   clear
-  if ps x | grep "bot_painel"|grep -v grep 1>/dev/null 2>/dev/null; then
+  [[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && {
+    pidbot_auto_pag=$(ps x|grep "bot_auto_pag"|awk -F "pts" {'print $1'})
+    kill -9 $pidbot_auto_pag 1>/dev/null 2>/dev/null
+    screen -wipe 1>/dev/null 2>/dev/null
+    }
+  [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) = '0' ]] && {
     pidbot_painel=$(ps x|grep "bot_painel"|awk -F "pts" {'print $1'})
     kill -9 $pidbot_painel 1>/dev/null 2>/dev/null
     screen -wipe 1>/dev/null 2>/dev/null
-    sleep 2
+    } 
+	sleep 2
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
+	wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/bot > /dev/null 2>&1
 	chmod 777 -R /bin/ppweb > /dev/null 2>&1
-  fi
   cd $HOME || exit
   echo ""
   echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"
   sleep 3
-  time_reboot "10"
+  bot_telegram
+}
+fun_botpag_api () {
+[[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && {
+    clear
+    echo -e "\E[44;1;37m     ATIVACÃO DO BOTPAG     \E[0m"
+    echo ""
+	echo -e "\033[1;32mALGUMAS INFORMAÇÕES: \033[1;33mPARA ATIVAR O BOTPAG\n\033[1;33mCERTIFIQUE-SE QUE ATIVOU O SSL NO\nDOMÍNIO DESSA VPS"
+    echo -ne "\n\033[1;32mINFORME O TOKEN\033[1;37m: "; read token
+    [[ -z $token ]] && {
+        echo -e "\n\033[1;31mINFORME O TOKEN!"
+		sleep 2
+        bot_telegram
+    }
+    echo -ne "\n\033[1;32mINFORME O DOMÍNIO\033[1;37m: "; read domain
+    [[ -z $domain ]] && {
+        echo -e "\n\033[1;31mINFORME O DOMÍNIO!"
+		sleep 2
+        bot_telegram
+    }
+	echo -ne "\n\033[1;32mINFORME O IP DO SERVIDOR SSH\033[1;37m: "; read ipserv
+    [[ -z $ipserv ]] && {
+        echo -e "\n\033[1;31mINFORME O IP DO SERVIDOR SSH!"
+		sleep 2
+        bot_telegram
+    }
+    echo -ne "\n\033[1;32mINFORME A SENHA ROOT DO SSH\033[1;37m: "; read senhassh
+    [[ -z $senhassh ]] && {
+        echo -e "\n\033[1;31mINFORME A SENHA ROOT DO SSH!"
+		sleep 2
+        bot_telegram
+    }
+	clear
+        echo -e "\033[1;32mINICIANDO BOTPAG \033[0m\n"
+        fun_botpag1() {
+            [[ ! -e "/bin/ppweb/botpag" ]] && {
+				wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
+                wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
+				chmod 777 -R /bin/ppweb > /dev/null 2>&1
+			}
+            token2=$(cat /bin/ppweb/botpag|grep "api_bot=" | awk -F = '{print $2}')
+  	        sed -i "s/api_bot=$token2/api_bot="$token"/" /bin/ppweb/botpag
+  	        domain2=$(cat /bin/ppweb/botpag|grep "dominio=" | awk -F = '{print $2}')
+  	        sed -i "s/dominio=$domain2/dominio="$domain"/" /bin/ppweb/botpag
+			ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
+  	        sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
+  	        senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
+  	        sed -i "s/senha_server=$senhassh2/senha_server="$senhassh"/" /bin/ppweb/botpag
+			cd /bin/ppweb
+            screen -dmS bot_auto_pag ./botpag >/dev/null 2>&1
+            [[ $(grep -wc "bot_auto_pag" /etc/autostart) = '0' ]] && {
+                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag && cd $HOME" >>/etc/autostart
+            } || {
+                sed -i '/bot_auto_pag/d' /etc/autostart
+                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag && cd $HOME" >>/etc/autostart
+            }
+            cd $HOME || exit
+			sleep 3
+    }
+        fun_bar 'fun_botpag1'
+        [[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && echo -e "\n\033[1;32m BOTPAG ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
+        sleep 2
+        bot_telegram
+} || {
+	clear
+        echo -e "\033[1;32mDESATIVANDO BOTPAG... \033[0m\n"
+        fun_botpag2() {
+            screen -r -S "bot_auto_pag" -X quit
+            screen -wipe 1>/dev/null 2>/dev/null
+            [[ $(grep -wc "bot_auto_pag" /etc/autostart) != '0' ]] && {
+                sed -i '/bot_auto_pag/d' /etc/autostart
+            }
+            sleep 2
+        }
+        fun_bar 'fun_botpag2'
+        echo -e "\n\033[1;32m \033[1;31mBOTPAG DESATIVADO! \033[0m"
+        sleep 2
+        bot_telegram
+}
 }
 fun_botOnOff() {
     [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) = '0' ]] && {
        clear
        echo ""
-       echo -e "\E[44;1;37m              INSTALADOR BOT PWEB                 \E[0m\n"
+       echo -e "\E[44;1;37m              ATIVAÇÃO DO BOT PWEB                 \E[0m\n"
 	   echo -e "                \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 	   echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
        echo -e "\n\033[1;32m1° \033[1;37m- \033[1;33mPELO SEU TELEGRAM ACESSE OS SEGUINTES BOT\033[1;37m:\033[0m"
@@ -602,7 +686,7 @@ fun_botOnOff() {
         clear
         echo -e "\033[1;32mINICIANDO BOT PWEB \033[0m\n"
         fun_bot1() {
-            [[ ! -e "/bin/ppweb/apibot" ]] && {
+            [[ ! -e "/bin/ppweb/bot" ]] && {
 				wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
                 wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
 				chmod 777 -R /bin/ppweb > /dev/null 2>&1
@@ -616,6 +700,7 @@ fun_botOnOff() {
                 echo -e "ps x | grep 'bot_painel' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_painel ./bot $tokenbot $iduser && cd $HOME" >>/etc/autostart
             }
             cd $HOME || exit
+			sleep 3
         }
         fun_bar 'fun_bot1'
         [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) != '0' ]] && echo -e "\n\033[1;32m BOT PWEB ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
@@ -638,13 +723,15 @@ fun_botOnOff() {
         bot_telegram
     }
 }
-stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOT" || echo -e "\033[1;32mATIVAR BOT")
+stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOTPWEB" || echo -e "\033[1;32mATIVAR BOTPWEB")
+stsbot2=$(ps x | grep "bot_auto_pag"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOTPAG" || echo -e "\033[1;32mATIVAR BOTPAG")
 echo ""
 echo -e "\E[44;1;37m            GERENCIAR BOT PWEB               \E[0m\n"
 echo -e "             \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
 echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33m$stsbot \033[0m"
-echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOT PWEB\033[0m"
+echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33m$stsbot2 \033[0m"
+echo -e "\033[1;31m[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOTs\033[0m"
 echo -e "\033[1;31m[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
 echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo ""
@@ -655,6 +742,10 @@ fun_botOnOff
 exit;
 ;;
 2|02)
+fun_botpag_api
+exit;
+;;
+3|03)
 fun_att_api
 exit;
 ;;

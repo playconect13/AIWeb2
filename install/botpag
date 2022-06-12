@@ -6,12 +6,12 @@ touch lista
 [[ -z $1 ]] && {
     clear && echo "INFORME O TOKEN" && exit
 }
-api_bot=$1
+api_bot="APIBOT"
 # Seu Dominio
-dominio=$2
+dominio="DOMINIO"
 # Informações Server
-ip_server="SEU-IP"
-senha_server="SUA-SENHA"
+ip_server="IPSERVER"
+senha_server="SUASENHA"
 ShellBot.init --token "$api_bot" --monitor --flush --return map
 ShellBot.username
 
