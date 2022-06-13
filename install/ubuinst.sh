@@ -343,7 +343,7 @@ tst_bkp
 clear
 sed -i "s;upload_max_filesize = 2M;upload_max_filesize = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 sed -i "s;post_max_size = 8M;post_max_size = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
-sed -i "s;max_execution_time = 30;max_execution_time = 0;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
+sed -i "s;max_execution_time = 30;max_execution_time = 600;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 echo -e "PAINELWEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
 echo ""
