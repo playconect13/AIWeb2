@@ -3,8 +3,8 @@ clear
 #--------[ DESENVOLVIDO POR @nandoslayer ]-----------#
 source apibot
 touch lista
-api_bot="APIBOT"
-dominio="DOMINIO"
+api_bot=$1
+dominio=$2
 ip_server="IPSERVER"
 senha_server="SUASENHA"
 ShellBot.init --token "$api_bot" --monitor --flush --return map

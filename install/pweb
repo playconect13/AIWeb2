@@ -539,7 +539,10 @@ echo -ne "\033[1;32m INFORME O NOVO NOME DA LOGO\033[1;37m: "; read empresa
     [[ -z $empresa ]] && {
         echo -e "\n\033[1;31mINFORME O NOVO NOME DA LOGO!"
 		sleep 2
+		cat /dev/null > ~/.bash_history && history -c
+        clear
         pweb
+		exit;
     }
 echo ""
 echo -e "   \033[1;32mLOGO ALTERADO COM SUCESSO!\033[1;37m"
@@ -583,6 +586,7 @@ fun_att_api () {
   echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"
   sleep 3
   bot_telegram
+  exit;
 }
 fun_botpag_api () {
 [[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && {
@@ -594,25 +598,33 @@ fun_botpag_api () {
     [[ -z $token ]] && {
         echo -e "\n\033[1;31mINFORME O TOKEN!"
 		sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
     echo -ne "\n\033[1;32mINFORME O DOMÍNIO:\033[1;37m: "; read domain
     [[ -z $domain ]] && {
         echo -e "\n\033[1;31mINFORME O DOMÍNIO!"
 		sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
 	echo -ne "\n\033[1;32mINFORME O IP DO SERVIDOR SSH:\033[1;37m: "; read ipserv
     [[ -z $ipserv ]] && {
         echo -e "\n\033[1;31mINFORME O IP DO SERVIDOR SSH!"
 		sleep 2
+		cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
     echo -ne "\n\033[1;32mINFORME A SENHA ROOT DO SSH:\033[1;37m: "; read senhassh
     [[ -z $senhassh ]] && {
         echo -e "\n\033[1;31mINFORME A SENHA ROOT DO SSH!"
 		sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
 	clear
         echo -e "\033[1;32mINICIANDO BOTPAG \033[0m\n"
@@ -622,21 +634,17 @@ fun_botpag_api () {
                 wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
 				chmod 777 -R /bin/ppweb > /dev/null 2>&1
 			}
-            token2=$(cat /bin/ppweb/botpag|grep "api_bot=" | awk -F = '{print $2}')
-  	        sed -i "s/api_bot=$token2/api_bot='$token'/" /bin/ppweb/botpag
-  	        domain2=$(cat /bin/ppweb/botpag|grep "dominio=" | awk -F = '{print $2}')
-  	        sed -i "s/dominio=$domain2/dominio='$domain'/" /bin/ppweb/botpag
 			ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
-  	        sed -i "s/ip_server=$ipserv2/ip_server='$ipserv'/" /bin/ppweb/botpag
+  	        sed -i "s/ip_server=$ipserv2/ip_server=""$ipserv""/" /bin/ppweb/botpag
   	        senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
-  	        sed -i "s/senha_server=$senhassh2/senha_server='$senhassh'/" /bin/ppweb/botpag
+  	        sed -i "s/senha_server=$senhassh2/senha_server=""$senhassh""/" /bin/ppweb/botpag
 			cd /bin/ppweb
-            screen -dmS bot_auto_pag ./botpag >/dev/null 2>&1
+            screen -dmS bot_auto_pag ./botpag $token $domain >/dev/null 2>&1
             [[ $(grep -wc "bot_auto_pag" /etc/autostart) = '0' ]] && {
-                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag && cd $HOME" >>/etc/autostart
+                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag  $token $domain && cd $HOME" >>/etc/autostart
             } || {
                 sed -i '/bot_auto_pag/d' /etc/autostart
-                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag && cd $HOME" >>/etc/autostart
+                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag  $token $domain && cd $HOME" >>/etc/autostart
             }
             cd $HOME || exit
 			sleep 3
@@ -644,7 +652,9 @@ fun_botpag_api () {
         fun_bar 'fun_botpag1'
         [[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && echo -e "\n\033[1;32m BOTPAG ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
         sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
 } || {
 	clear
         echo -e "\033[1;32mDESATIVANDO BOTPAG... \033[0m\n"
@@ -659,7 +669,9 @@ fun_botpag_api () {
         fun_bar 'fun_botpag2'
         echo -e "\n\033[1;32m \033[1;31mBOTPAG DESATIVADO! \033[0m"
         sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
 }
 }
 fun_botOnOff() {
@@ -678,13 +690,17 @@ fun_botOnOff() {
     [[ -z $tokenbot ]] && {
         echo -e "\n\033[1;31mINFORME SEU TOKEN!"
 		sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
 	echo -ne "\n\033[1;32mINFORME SEU ID:\033[1;37m: "; read iduser
     [[ -z $iduser ]] && {
         echo -e "\n\033[1;31mINFORME SEU ID!"
 		sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
         clear
         echo -e "\033[1;32mATIVANDO BOT PWEB \033[0m\n"
@@ -708,7 +724,9 @@ fun_botOnOff() {
         fun_bar 'fun_bot1'
         [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) != '0' ]] && echo -e "\n\033[1;32m BOT PWEB ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
         sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     } || {
         clear
         echo -e "\033[1;32mDESATIVANDO BOT PWEB... \033[0m\n"
@@ -723,7 +741,9 @@ fun_botOnOff() {
         fun_bar 'fun_bot2'
         echo -e "\n\033[1;32m \033[1;31mBOT PWEB DESATIVADO! \033[0m"
         sleep 2
+        cat /dev/null > ~/.bash_history && history -c
         bot_telegram
+		exit;
     }
 }
 stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOTPWEB" || echo -e "\033[1;32mATIVAR BOTPWEB")
@@ -733,7 +753,7 @@ echo -e "\E[44;1;37m            GERENCIAR BOT PWEB               \E[0m\n"
 echo -e "             \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
 echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33m$stsbot \033[0m"
-echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33m$stsbot2 AINDA NÃO FUNCIONA\033[0m"
+echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33m$stsbot2 EM DESENVOLVIMENTO\033[0m"
 echo -e "\033[1;31m[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOTs\033[0m"
 echo -e "\033[1;31m[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
 echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
