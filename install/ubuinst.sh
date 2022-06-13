@@ -123,11 +123,11 @@ function dependencias {
   done
 }
 function install_start {
-  msg -bar
   echo -e 'by: @nandoslayer' >/usr/lib/telegram
+  msg -bar
   echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA   \033[1;37m"
   msg -bar
-  print_center -ama "Os pacotes do sistema serão atualizados.\n Pode demorar um pouco e pedir algumas confirmações.\n"
+  print_center -ama "O sistema será atualizado.\n Pode demorar um pouco e pedir algumas confirmações.\n"
   msg -bar3
   msg -ne "\n Você deseja continuar? [S/n]: "
   read opcion
@@ -142,6 +142,11 @@ function install_start {
   add-apt-repository ppa:ondrej/php -y
   apt update -y
   apt upgrade -y
+  clear
+  msg -bar
+  echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA CONCLUÍDA COM SUCESSO!\033[1;37m"
+  msg -bar
+  sleep 3
   clear
 }
 
@@ -296,15 +301,15 @@ sed -i "s;49875103u;$pwdroot;g" /var/www/html/pages/system/config.php > /dev/nul
 sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 }
 clear
-echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
-ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
-dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 install_start
 install_continue
 install_continue2
 IP=$(wget -qO- ipv4.icanhazip.com)
+echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
+ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
+dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 clear
-echo -e "\E[44;1;37m    INSTALANDO PAINEL     \E[0m"
+echo -e "\E[44;1;37m    INSTALANDO PAINEL    \E[0m"
 echo ""
 echo -e "WEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
@@ -362,7 +367,7 @@ echo ""
 echo -e "\033[1;31m \033[1;33mCOMANDO PRINCIPAL: \033[1;32mpweb\033[0m"
 echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@nandoslayer\033[0m"
 echo ""
-echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar \033[1;32m! \033[0m"; read
+echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar...\033[1;32m! \033[0m"; read
 systemctl restart apache2 > /dev/null 2>&1
 systemctl restart mysql > /dev/null 2>&1
 cat /dev/null > ~/.bash_history && history -c
