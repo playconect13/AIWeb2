@@ -296,13 +296,13 @@ sed -i "s;49875103u;$pwdroot;g" /var/www/html/pages/system/config.php > /dev/nul
 sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 }
 clear
+echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
+ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
+dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 install_start
 install_continue
 install_continue2
 IP=$(wget -qO- ipv4.icanhazip.com)
-echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
-ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
-dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 clear
 echo -e "\E[44;1;37m    INSTALANDO PAINEL     \E[0m"
 echo ""
