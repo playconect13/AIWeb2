@@ -137,10 +137,10 @@ function install_start {
   msg -bar
   echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA   \033[1;37m"
   msg -bar
-  apt install software-properties-common > /dev/null 2>&1
-  apt update -y > /dev/null 2>&1
-  add-apt-repository ppa:ondrej/php -y > /dev/null 2>&1
-  apt update -y > /dev/null 2>&1
+  apt install software-properties-common
+  apt update -y
+  add-apt-repository ppa:ondrej/php -y
+  apt update -y
   apt upgrade -y
   clear
 }
