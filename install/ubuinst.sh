@@ -124,16 +124,16 @@ function dependencias {
 function install_start {
   if [[ -e "/var/www/html/pages/system/pass.php" ]]; then
    clear
-    echo -e "\033[1;31mPAINEL JÁ INSTALDO EM SUA VPS,\033[0m"
-    echo -e "\033[1;31mRECOMENDO UMA FORMATAÇÃO PARA UMA NOVA INSTALÇÃO!\033[0m"
-    sleep 3
+    echo -e "\033[1;31mPAINEL JÁ INSTALDO EM SUA VPS, RECOMENDO\033[0m"
+    echo -e "\033[1;31mUMA FORMATAÇÃO PARA UMA NOVA INSTALÇÃO!\033[0m"
+    sleep 5
     systemctl restart apache2 > /dev/null 2>&1
 cat /dev/null > ~/.bash_history && history -c
 rm /bin/ubuinst* > /dev/null 2>&1
 clear
 exit;
 else
-    echo -e 'by: @nandoslayer' >/usr/lib/telegram
+  echo -e 'by: @nandoslayer' >/usr/lib/telegram
   msg -bar
   echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA   \033[1;37m"
   msg -bar
