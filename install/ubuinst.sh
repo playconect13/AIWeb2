@@ -78,7 +78,6 @@ function stop_install {
  } || {
     title "INSTALAÇÃO CANCELADA"
     clear
-    pweb
     exit;
 }
 }
@@ -123,6 +122,17 @@ function dependencias {
   done
 }
 function install_start {
+  if [[ -e "/var/www/html/pages/system/pass.php" ]]; then
+   clear
+    echo -e "\033[1;31mPAINEL JÁ INSTALDO EM SUA VPS,\033[0m"
+    echo -e "\033[1;31mRECOMENDO UMA FORMATAÇÃO PARA UMA NOVA INSTALÇÃO!\033[0m"
+    sleep 3
+    systemctl restart apache2 > /dev/null 2>&1
+cat /dev/null > ~/.bash_history && history -c
+rm /bin/ubuinst* > /dev/null 2>&1
+clear
+exit;
+else
   echo -e 'by: @nandoslayer' >/usr/lib/telegram
   msg -bar
   echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA   \033[1;37m"
@@ -148,6 +158,8 @@ function install_start {
   msg -bar
   sleep 3
   clear
+  install_continue
+fi
 }
 
 function install_continue {
@@ -168,6 +180,7 @@ function install_continue {
   print_center -ama "Se algumas das dependências falharem!!!\nQuando terminar, você pode tentar instalar\no mesmo manualmente usando o seguinte comando\napt install nome_do_pacote"
   msg -bar
   read -t 60 -n 1 -rsp $'\033[1;39m       << Pressione enter para continuar >>\n'
+  install_continue2
 }
 function install_continue2 {
 cd /bin || exit
@@ -192,6 +205,7 @@ clear
 #INICIO AUTOMATICO' >/etc/autostart
 	chmod +x /etc/autostart
 }
+inst_base
 }
 function inst_base {
     echo -e "\n\033[1;36mINSTALANDO O APACHE2 \033[1;33mAGUARDE...\033[0m"
@@ -233,6 +247,7 @@ chmod 777 -R /var/www/html > /dev/null 2>&1
 rm gestorssh.zip index.html > /dev/null 2>&1
 systemctl restart mysql
 clear
+phpmadm
 }
 function phpmadm {
 cd /usr/share || exit
@@ -244,25 +259,27 @@ ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin > /dev/null 2>&1
 systemctl restart apache2 > /dev/null 2>&1 
 rm phpMyAdmin-5.2.0-all-languages.zip > /dev/null 2>&1
 cd /root || exit
+pconf
 }
 
 function pconf { 
 sed "s/1020/$pwdroot/" /var/www/html/pages/system/pass.php > /tmp/pass
 mv /tmp/pass /var/www/html/pages/system/pass.php
-
+inst_db
 }
 function inst_db { 
 sleep 1
 if [[ -e "/var/www/html/bdgestorssh.sql" ]]; then
     mysql -h localhost -u root -p"$pwdroot" --default_character_set utf8 sshplus < /var/www/html/bdgestorssh.sql > /dev/null 2>&1
     rm /var/www/html/bdgestorssh.sql > /dev/null 2>&1
+    cron_set
 else
     clear
     echo -e "\033[1;31m ERRO CRÍTICO\033[0m"
     sleep 2
     systemctl restart apache2 > /dev/null 2>&1
 cat /dev/null > ~/.bash_history && history -c
-rm /root/*.sh* > /dev/null 2>&1
+rm /bin/ubuinst* > /dev/null 2>&1
 clear
 exit;
 fi
@@ -283,6 +300,7 @@ echo "
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.php
 @monthly /usr/bin/php /var/www/html/pages/system/cron.limpeza.php" > cronset
 crontab cronset && rm cronset > /dev/null 2>&1
+fun_swap
 }
 function fun_swap {
 			swapoff -a
@@ -294,6 +312,7 @@ function fun_swap {
             echo 50  > /proc/sys/vm/swappiness
             echo '/bin/ram.img none swap sw 0 0' | tee -a /etc/fstab > /dev/null 2>&1
             sleep 2
+            tst_bkp
 }
 function tst_bkp {
 cd || exit
@@ -301,9 +320,6 @@ sed -i "s;49875103u;$pwdroot;g" /var/www/html/pages/system/config.php > /dev/nul
 sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 }
 clear
-install_start
-install_continue
-install_continue2
 IP=$(wget -qO- ipv4.icanhazip.com)
 echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
@@ -338,13 +354,7 @@ echo -e "\n\033[1;36mINICIANDO INSTALAÇÃO \033[1;33mAGUARDE..."
 sleep 3
 clear
 sleep 1
-inst_base
-phpmadm
-pconf
-inst_db
-cron_set
-fun_swap
-tst_bkp
+install_start
 clear
 sed -i "s;upload_max_filesize = 2M;upload_max_filesize = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 sed -i "s;post_max_size = 8M;post_max_size = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
