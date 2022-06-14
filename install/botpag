@@ -136,7 +136,7 @@ unset botao1
 botao1=''
 ShellBot.InlineKeyboardButton --button 'botao1' --line 1 --text '🇧🇷 CRIAR TESTE 🇧🇷' --callback_data 'gerarssh'
 ShellBot.InlineKeyboardButton --button 'botao1' --line 2 --text '🇧🇷 COMPRAR PRO 🇧🇷' --callback_data 'menucompra'
-ShellBot.InlineKeyboardButton --button 'botao1' --line 3 --text '📲 BAIXAR APP 📲' --callback_data '2' --url "https://$dominio/app.apk" # LINK APP
+ShellBot.InlineKeyboardButton --button 'botao1' --line 3 --text '📲 BAIXAR APP 📲' --callback_data '2' --url "https://$dominio/apps/apk/app_s1.apk" # LINK APP
 ShellBot.InlineKeyboardButton --button 'botao1' --line 4 --text '🧑🏼‍💻 SUPORTE 🧑🏼‍💻' --callback_data '3' --url 't.me/sshbrvpn' # LINK TELEGRAM
 
 ShellBot.regHandleFunction --function criarteste --callback_data gerarssh
@@ -146,9 +146,9 @@ keyboard1="$(ShellBot.InlineKeyboardMarkup -b 'botao1')"
 
 fun_menucompra() {
     iduser="$1"
-    url1="https://$dominio/comprar.php?id=$iduser%26login=1"
-    url2="https://$dominio/comprar.php?id=$iduser%26login=2"
-    url3="https://$dominio/comprar.php?id=$iduser%26login=3"
+    url1="https://$dominio/vendas/comprar.php?id=$iduser%26login=1"
+    url2="https://$dominio/vendas/comprar.php?id=$iduser%26login=2"
+    url3="https://$dominio/vendas/comprar.php?id=$iduser%26login=3"
     botao2=''
     ShellBot.InlineKeyboardButton --button 'botao2' --line 1 --text '1 LOGIN 10R$' --callback_data '1' --url "$url1"
     ShellBot.InlineKeyboardButton --button 'botao2' --line 2 --text '2 LOGIN 15R$' --callback_data '2' --url "$url2"
