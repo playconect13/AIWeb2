@@ -582,8 +582,10 @@ fun_att_api () {
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
 	wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
 	chmod 777 -R /bin/ppweb > /dev/null 2>&1
-	sed -i "s/ip_server=$ipserv/ip_server="$ipserv"/" /bin/ppweb/botpag
-	sed -i "s/senha_server=$senhassh/senha_server="$senhassh"/" /bin/ppweb/botpag
+	ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
+  	sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
+  	senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
+  	sed -i "s/senha_server=$senhassh2/senha_server="$senhassh"/" /bin/ppweb/botpag
   cd $HOME || exit
   echo ""
   echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"

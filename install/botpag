@@ -5,8 +5,8 @@ source apibot
 touch lista
 api_bot=$1
 dominio=$2
-ip_server="IPSERVER"
-senha_server="SUASENHA"
+ip_server=IPSERVER
+senha_server=SUASENHA
 ShellBot.init --token "$api_bot" --monitor --flush --return map
 ShellBot.username
 
