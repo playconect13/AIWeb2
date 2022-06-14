@@ -268,7 +268,6 @@ IP=$(wget -qO- ipv4.icanhazip.com)
 echo "America/Sao_Paulo" > /etc/timezone
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
-IP=$(wget -qO- ipv4.icanhazip.com)
 clear
 echo ""
 echo -e "\E[44;1;37m    ATUALIZANDO O PAINEL MODO PADRÃO X86_64     \E[0m"
@@ -372,7 +371,6 @@ IP=$(wget -qO- ipv4.icanhazip.com)
 echo "America/Sao_Paulo" > /etc/timezone
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
-IP=$(wget -qO- ipv4.icanhazip.com)
 clear
 echo ""
 echo -e "\E[44;1;37m    ATUALIZANDO O PAINELWEB GESTOR-SSH MODO COMPATÍVEL COM ARM     \E[0m"
@@ -578,10 +576,14 @@ fun_att_api () {
   screen -r -S "bot_painel" -X quit > /dev/null 2>&1
   screen -wipe 1>/dev/null 2>/dev/null
 	sleep 2
+	ipserv=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
+  	senhassh=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
 	wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
 	chmod 777 -R /bin/ppweb > /dev/null 2>&1
+	sed -i "s/ip_server=$ipserv/ip_server="$ipserv"/" /bin/ppweb/botpag
+	sed -i "s/senha_server=$senhassh/senha_server="$senhassh"/" /bin/ppweb/botpag
   cd $HOME || exit
   echo ""
   echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"
@@ -636,9 +638,9 @@ fun_botpag_api () {
 				chmod 777 -R /bin/ppweb > /dev/null 2>&1
 			}
 			ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
-  	        sed -i "s/ip_server=$ipserv2/ip_server=""$ipserv""/" /bin/ppweb/botpag
+  	        sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
   	        senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
-  	        sed -i "s/senha_server=$senhassh2/senha_server=""$senhassh""/" /bin/ppweb/botpag
+  	        sed -i "s/senha_server=$senhassh2/senha_server="$senhassh"/" /bin/ppweb/botpag
 			cd /bin/ppweb
             screen -dmS bot_auto_pag ./botpag $token $domain >/dev/null 2>&1
             [[ $(grep -wc "bot_auto_pag" /etc/autostart) = '0' ]] && {
