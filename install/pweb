@@ -470,6 +470,7 @@ echo ""
 echo -e "\n\033[1;33mÉ NECESSÁRIO O PAINEL INSTALADO E O\nARQUIVO (\033[1;32msshplus.sql.bz2\033[1;33m) NA PASTA (root/restaurar)!\033[0m\n"
 echo ""
 echo -ne "\033[1;32mDE UM ENTER PRA CONTINUAR...\033[0m"; read -r
+bzip2 /root/restaurar/sshplus.sql > /dev/null 2>&1
 
 [[ ! -e /var/www/html/pages/system/pass.php ]] && {
 echo -e "\n\033[1;31mO PAINEL NÃO ESTÁ INSTALADO!\033[0m"
