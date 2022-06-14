@@ -63,7 +63,7 @@ criarteste() {
     usuario=$(echo teste$(( RANDOM% + 250 )))
     senha=$((RANDOM% + 99999))
     limite='1'
-    tempo='3'
+    tempo='6'
     tuserdate=$(date '+%C%y/%m/%d' -d " +1 days")
     if sshpass -p "$senha_server" ssh -o ConnectTimeout=2 -o StrictHostKeyChecking=no root@$ip_server echo "ok" 1>/dev/null 2>/dev/null; then
 		sshpass -p "$senha_server" ssh -o ConnectTimeout=2 -o StrictHostKeyChecking=no root@$ip_server << EOF
@@ -83,7 +83,7 @@ EOF
 	echo ${callback_query_from_id} >> lista
     # - ENVIA O SSH
     ShellBot.sendMessage --chat_id ${callback_query_message_chat_id} \
-    --text "$(echo -e "✅ <b>Teste Criado com sucesso!</b> ✅\n\nIP: $ip_server\nUSUÁRIO: <code>$usuario</code>\nSENHA: <code>$senha</code>\n\n⏳ Expira em: $tempo Hora")" \
+    --text "$(echo -e "✅ <b>Teste Criado com sucesso!</b> ✅\n\nIP: $ip_server\nUSUÁRIO: <code>$usuario</code>\nSENHA: <code>$senha</code>\n\n⏳ Expira em: $tempo Horas")" \
     --parse_mode html
     return 0
 else
