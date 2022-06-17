@@ -719,7 +719,7 @@ rm botpag.zip &>/dev/null
 
 [[ -f useradd.sh ]] && mv useradd.sh /bin/ppweb/botpag &>/dev/null
 
-[[ -f useratest.sh ]] && mv useratest.sh /bin/ppweb/botpag &>/dev/null
+[[ -f useratest.sh ]] && mv usertest.sh /bin/ppweb/botpag &>/dev/null
 
 [[ -f botauto.sh ]] && mv botauto.sh /bin/ppweb/botpag &>/dev/null
 
