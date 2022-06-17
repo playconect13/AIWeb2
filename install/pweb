@@ -572,7 +572,7 @@ fun_att_api () {
   echo -e "\033[1;31mAGUARDE \033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
   sleep 3
   clear
-  screen -r -S "bot_auto_pag" -X quit > /dev/null 2>&1
+  screen -r -S "botpag" -X quit > /dev/null 2>&1
   screen -r -S "bot_painel" -X quit > /dev/null 2>&1
   screen -wipe 1>/dev/null 2>/dev/null
 	sleep 2
@@ -594,90 +594,238 @@ fun_att_api () {
   exit;
 }
 fun_botpag_api () {
-[[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && {
-    clear
-    echo -e "\E[44;1;37m     ATIVACÃO DO BOTPAG     \E[0m"
-    echo ""
-	echo -e "\033[1;32mALGUMAS INFORMAÇÕES: \033[1;33mPARA ATIVAR O BOTPAG\n\033[1;33mCERTIFIQUE-SE QUE ATIVOU O SSL NO\nDOMÍNIO DESSA VPS"
-    echo -ne "\n\033[1;32mINFORME O TOKEN:\033[1;37m: "; read token
-    [[ -z $token ]] && {
-        echo -e "\n\033[1;31mINFORME O TOKEN!"
-		sleep 2
-        cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
-    }
-    echo -ne "\n\033[1;32mINFORME O DOMÍNIO:\033[1;37m: "; read domain
-    [[ -z $domain ]] && {
-        echo -e "\n\033[1;31mINFORME O DOMÍNIO!"
-		sleep 2
-        cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
-    }
-	echo -ne "\n\033[1;32mINFORME O IP DO SERVIDOR SSH:\033[1;37m: "; read ipserv
-    [[ -z $ipserv ]] && {
-        echo -e "\n\033[1;31mINFORME O IP DO SERVIDOR SSH!"
-		sleep 2
-		cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
-    }
-    echo -ne "\n\033[1;32mINFORME A SENHA ROOT DO SSH:\033[1;37m: "; read senhassh
-    [[ -z $senhassh ]] && {
-        echo -e "\n\033[1;31mINFORME A SENHA ROOT DO SSH!"
-		sleep 2
-        cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
-    }
-	clear
-        echo -e "\033[1;32mINICIANDO BOTPAG \033[0m\n"
-        fun_botpag1() {
-            [[ ! -e "/bin/ppweb/botpag" ]] && {
-				wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
-                wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
-				chmod 777 -R /bin/ppweb > /dev/null 2>&1
-			}
-			ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
-  	        sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
-  	        senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
-  	        sed -i "s/senha_server=$senhassh2/senha_server="$senhassh"/" /bin/ppweb/botpag
-			cd /bin/ppweb
-            screen -dmS bot_auto_pag ./botpag $token $domain >/dev/null 2>&1
-            [[ $(grep -wc "bot_auto_pag" /etc/autostart) = '0' ]] && {
-                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag  $token $domain && cd $HOME" >>/etc/autostart
+
+getBotToken(){
+  echo $1 > /bin/ppweb/botpag/token-bot
+}
+getMpToken(){
+  echo $1 > /bin/ppweb/botpag/token-mp
+}
+getserIP(){
+  echo $1 > /bin/ppweb/botpag/ip-serv-ssh
+}
+getsenharoot(){
+  echo $1 > /bin/ppweb/botpag/senha-serv-ssh
+}
+getparoot(){
+  echo $1 > /bin/ppweb/botpag/senha-vps-web
+}
+getPageOrder(){
+  echo https://$1/vendas/salvarPedido.php > /bin/ppweb/botpag/info-de-compra
+}
+revenda(){
+  echo $1 > /bin/ppweb/botpag/link-revenda
+}
+valorArquivo(){
+  echo $1 > /bin/ppweb/botpag/valor-arquivo
+}
+
+pararBot(){
+  clear
+  echo -e "[-] DESATIVANDO BOTPAG"
+  sleep 3
+  screenList=$(screen -ls | grep botpag | awk -F'.' {' print $1 '})
+  for id in $screenList; do
+  screen -X -S $id quit
+  done
+ echo -e "[-] BOTPAG DESATIVADO COM SUCESSO!"
+ sleep 3
+ botpag
+ exit 1
+}
+
+executarBot(){
+  clear
+banner
+  chave=$(curl -sSL "raw.githubusercontent.com/nandoslayer/pweb/painel/install/chave") &>/dev/null
+  key=$(cat /bin/ppweb/botpag/chave_inst) &>/dev/null
+    
+         if [[ "$key" = "$chave" ]]
+          then
+              echo "[-] ATIVANDO BOTPAG"
+              sleep 3
+                cd /bin/ppweb/botpag
+            screen -dmS botpag ./botauto >/dev/null 2>&1
+            [[ $(grep -wc "botpag" /etc/autostart) = '0' ]] && {
+                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto && cd $HOME" >>/etc/autostart
             } || {
-                sed -i '/bot_auto_pag/d' /etc/autostart
-                echo -e "ps x | grep 'bot_auto_pag' | grep -v 'grep' || cd /bin/ppweb && screen -dmS bot_auto_pag ./botpag  $token $domain && cd $HOME" >>/etc/autostart
+                sed -i '/botpag/d' /etc/autostart
+                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto && cd $HOME" >>/etc/autostart
             }
             cd $HOME || exit
-			sleep 3
-    }
-        fun_bar 'fun_botpag1'
-        [[ $(ps x | grep "bot_auto_pag" | grep -v grep | wc -l) = '0' ]] && echo -e "\n\033[1;32m BOTPAG ATIVADO!\033[0m" || echo -e "\n\033[1;31m ERRO! CONFIRA SUAS INFORMAÇÕES\033[0m"
-        sleep 2
-        cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
-} || {
-	clear
-        echo -e "\033[1;32mDESATIVANDO BOTPAG... \033[0m\n"
-        fun_botpag2() {
-            screen -r -S "bot_auto_pag" -X quit
-            screen -wipe 1>/dev/null 2>/dev/null
-            [[ $(grep -wc "bot_auto_pag" /etc/autostart) != '0' ]] && {
-                sed -i '/bot_auto_pag/d' /etc/autostart
-            }
-            sleep 2
-        }
-        fun_bar 'fun_botpag2'
-        echo -e "\n\033[1;32m \033[1;31mBOTPAG DESATIVADO! \033[0m"
-        sleep 2
-        cat /dev/null > ~/.bash_history && history -c
-        bot_telegram
-		exit;
+                botpag
+                
+
+          else
+            echo "[-] ESSA CHAVE NÃO É VÁLIDA!"
+            sleep 3
+            bot_telegram
+            exit 1
+          fi
+  
 }
+
+verificar_chave(){
+clear
+banner
+chave=$(curl -sSL "raw.githubusercontent.com/nandoslayer/pweb/painel/install/chave") &>/dev/null
+  
+  if [[ ! -f /bin/ppweb/botpag/chave_inst ]]
+  then
+
+read -p "DIGITE A CHAVE DE INSTALÇÃO: " key
+    
+         if [[ "$key" = "$chave" ]]
+          then
+               echo -e "[*] VALIDANDO A CHAVE DE INSTALAÇÃO"
+                sleep 3
+                prepararAmbiente
+                echo $key > /bin/ppweb/botpag/chave_inst
+          
+              sleep 1
+              botpag
+            else
+            echo "[-] ESSA CHAVE NÃO É VÁLIDA!"
+            sleep 3
+            bot_telegram
+            exit 1
+          fi
+    
+    else
+
+    key=$(cat /bin/ppweb/botpag/chave_inst) &>/dev/null
+    
+         if [[ "$key" = "$chave" ]]
+          then
+          botpag
+          else
+          echo "[-] ESSA CHAVE NÃO É VÁLIDA!"
+          sleep 3
+          bot_telegram
+          exit 1
+          fi
+    fi
+}
+
+prepararAmbiente(){
+
+unzip botpag.zip &>/dev/null
+  
+[[ -d /bin/ppweb/botpag ]] || mkdir /bin/ppweb/botpag &>/dev/null
+
+[[ -f useradd.sh ]] && mv useradd.sh /bin/ppweb/botpag &>/dev/null
+
+[[ -f useratest.sh ]] && mv useratest.sh /bin/ppweb/botpag &>/dev/null
+
+[[ -f botauto.sh ]] && mv botauto.sh /bin/ppweb/botpag &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/chave_inst ]] && touch /bin/ppweb/botpag/chave_inst &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/token-bot ]] && touch /bin/ppweb/botpag/token-bot &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/token-mp ]] && touch /bin/ppweb/botpag/token-mp &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/info-de-compra ]] && touch /bin/ppweb/botpag/info-de-compra &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/link-revenda ]] && touch /bin/ppweb/botpag/link-revenda &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/ip-serv-ssh ]] && touch /bin/ppweb/botpag/ip-serv-ssh &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/senha-serv-ssh ]] && touch /bin/ppweb/botpag/senha-serv-ssh &>/dev/null
+
+[[ ! -f /bin/ppweb/botpag/senha-vps-web ]] && touch /bin/ppweb/botpag/senha-vps-web &>/dev/null
+
+}
+
+banner(){
+cat <<FECHA
+
+_________________________________________________
+             ____ ____ ___ ____ ____ ____
+             |__] |  |  |  |__| |__| | _ 
+             |__] |__|  |  |    |  | |__| 
+_________________________________________________
+                                  BY @nandoslayer
+
+FECHA
+
+}
+
+escolha(){
+  echo "Escolha o que deseja fazer: "
+  read -p "  ▍" leitor
+  [[ $leitor == 1 ]] && setup
+  [[ $leitor == 2 ]] && executarBot
+  [[ $leitor == 3 ]] && pararBot
+  [[ $leitor == 0 ]] && bot_telegram && exit 1
+  [[ $leitor == * ]] && botpag && exit 1
+  
+}
+
+
+botpag(){ 
+clear
+banner
+printf """
+ ===============================
+ | 1 ) CONFIGURAR BOTPAG       | 
+ ===============================
+ | 2 ) ATIVAR BOTPAG           | 
+ ===============================
+ | 3 ) DESATIVAR BOTPAG        | 
+ ===============================
+ | 0 ) VOLTAR                  |
+ ===============================\n
+ """
+escolha
+ }
+ 
+ 
+ setup(){
+    read -p "Digite o token do seu bot: " token_bot
+    getBotToken $token_bot
+    [[ -z $token_bot ]] && botpag && exit 1
+    
+    read -p "Digite o token da API Mercado Pago: " token_mp
+     [[ -z $token_mp ]] && botpag && exit 1
+    getMpToken $token_mp
+
+    read -p "Digite o IP do SERVER SSH: " ip_serv_ssh
+    [[ -z $ip_serv_ssh ]] && botpag && exit 1
+    getserIP $ip_serv_ssh
+    
+    read -p "Digite a SENHA ROOT do SERVER SSH : " senha_root_ssh
+     [[ -z $senha_root_ssh ]] && botpag && exit 1
+    getsenharoot $senha_root_ssh
+
+    read -p "Digite a SENHA ROOT DO PAINEL WEB: " senha_root_web
+     [[ -z $senha_root_web ]] && botpag && exit 1
+    getparoot $senha_root_web
+   
+    read -p "Digite a pagina para salvar os pedidos. EX> meusite.com.br : " paginaOrder
+      [[ -z $paginaOrder ]] && botpag && exit 1
+      getPageOrder $paginaOrder
+     
+    read -p "Digite o link de telegram da revenda: " linkRevenda
+    [[ -z $linkRevenda ]] && botpag && exit 1
+    revenda $linkRevenda
+
+    read -p "Digite o valor da conta pro de 30 dias. Ex> 10.00: " valor_arquivo
+    [[ -z $valor_arquivo ]] && botpag && exit 1
+    valorArquivo $valor_arquivo
+    
+    echo -e "[*] BAIXANDO DEPENDÊNCIAS...\n"
+    sleep 2
+    apt install pv -y> /dev/null 2>&1
+    sleep 1
+      chmod +x /bin/ppweb/botpag/botauto &>/dev/null
+      chmod +x /bin/ppweb/botpag/useradd.sh &>/dev/null
+      chmod +x /bin/ppweb/botpag/usertest.sh &>/dev/null
+      clear 
+      botpag
+}
+
+verificar_chave
 }
 fun_botOnOff() {
     [[ $(ps x | grep "bot_painel" | grep -v grep | wc -l) = '0' ]] && {
@@ -751,14 +899,14 @@ fun_botOnOff() {
 		exit;
     }
 }
-stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOTPWEB" || echo -e "\033[1;32mATIVAR BOTPWEB")
-stsbot2=$(ps x | grep "bot_auto_pag"|grep -v grep > /dev/null && echo -e "\033[1;31mDESATIVAR BOTPAG" || echo -e "\033[1;32mATIVAR BOTPAG")
+stsbot=$(ps x | grep "bot_painel"|grep -v grep > /dev/null && echo -e "\033[1;32m ON ◉" || echo -e "\033[1;31mOFF ○")
+stsbot2=$(ps x | grep "botpag"|grep -v grep > /dev/null && echo -e "\033[1;32m ON ◉" || echo -e "\033[1;31mOFF ○")
 echo ""
 echo -e "\E[44;1;37m            GERENCIAR BOT PWEB               \E[0m\n"
 echo -e "             \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
-echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33m$stsbot \033[0m"
-echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33m$stsbot2 EM DESENVOLVIMENTO\033[0m"
+echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mGERENCIAR BOTPWEB $stsbot\033[0m"
+echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mGERENCIAR BOTPAG $stsbot2\033[0m"
 echo -e "\033[1;31m[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOTs\033[0m"
 echo -e "\033[1;31m[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
 echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
