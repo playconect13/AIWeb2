@@ -708,6 +708,8 @@ read -p "DIGITE A CHAVE DE INSTALÇÃO: " key
 }
 
 prepararAmbiente(){
+
+rm /bin/ppweb/botpag/* &>/dev/null
 	
 wget https://github.com/nandoslayer/pweb/raw/painel/install/botpag.zip &>/dev/null
 
@@ -719,7 +721,7 @@ rm botpag.zip &>/dev/null
 
 [[ -f useradd.sh ]] && mv useradd.sh /bin/ppweb/botpag &>/dev/null
 
-[[ -f useratest.sh ]] && mv usertest.sh /bin/ppweb/botpag &>/dev/null
+[[ -f usertest.sh ]] && mv usertest.sh /bin/ppweb/botpag &>/dev/null
 
 [[ -f botauto.sh ]] && mv botauto.sh /bin/ppweb/botpag &>/dev/null
 
