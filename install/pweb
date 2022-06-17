@@ -645,12 +645,12 @@ banner
               echo "[-] ATIVANDO BOTPAG"
               sleep 3
                 cd /bin/ppweb/botpag
-            screen -dmS botpag ./botauto >/dev/null 2>&1
+            screen -dmS botpag ./botauto.sh >/dev/null 2>&1
             [[ $(grep -wc "botpag" /etc/autostart) = '0' ]] && {
-                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto && cd $HOME" >>/etc/autostart
+                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto.sh && cd $HOME" >>/etc/autostart
             } || {
                 sed -i '/botpag/d' /etc/autostart
-                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto && cd $HOME" >>/etc/autostart
+                echo -e "ps x | grep 'botpag' | grep -v 'grep' || cd /bin/ppweb/botpag && screen -dmS botpag ./botauto.sh && cd $HOME" >>/etc/autostart
             }
             cd $HOME || exit
                 botpag
@@ -708,8 +708,12 @@ read -p "DIGITE A CHAVE DE INSTALÇÃO: " key
 }
 
 prepararAmbiente(){
+	
+wget https://github.com/nandoslayer/pweb/raw/painel/install/botpag.zip &>/dev/null
 
 unzip botpag.zip &>/dev/null
+
+rm botpag.zip &>/dev/null
   
 [[ -d /bin/ppweb/botpag ]] || mkdir /bin/ppweb/botpag &>/dev/null
 
@@ -818,7 +822,7 @@ escolha
     sleep 2
     apt install pv -y> /dev/null 2>&1
     sleep 1
-      chmod +x /bin/ppweb/botpag/botauto &>/dev/null
+      chmod +x /bin/ppweb/botpag/botauto.sh &>/dev/null
       chmod +x /bin/ppweb/botpag/useradd.sh &>/dev/null
       chmod +x /bin/ppweb/botpag/usertest.sh &>/dev/null
       clear 
