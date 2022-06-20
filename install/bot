@@ -760,7 +760,7 @@ fun_download() {
         _erro='1'
         return 0
     }
-    _DirArq=$(ls /etc/bot/arquivos)
+    _DirArq=$(ls /root/backupvps)
     i=0
     unset _Pass
     while read _Arq; do
@@ -773,7 +773,7 @@ fun_download() {
     _file=$(echo -e "${_Pass}" | grep -E "\b$Opc\b" | cut -d: -f2)
     echo $_file2
     ShellBot.sendDocument --chat_id ${message_from_id[$id]} \
-        --document "@/etc/bot/arquivos/$_file" \
+        --document "@/root/backupvps/$_file" \
         --caption "$(echo -e "✅ CRIADO COM SUCESSO ✅\n\nUSUARIO: <code>$(awk -F " " '/Nome/ {print $2}' $_file2)</code>\nSENHA: <code>$(awk -F " " '/Senha/ {print $2}' $_file2)</code>\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $_file2)\nEXPIRA EM: $(awk -F " " '/Validade/ {print $2}' $_file2)")" \
         --parse_mode html
     [[ -e "/root/$(awk -F " " '/Nome/ {print $2}' $_file2).ovpn" ]] && {
@@ -859,7 +859,7 @@ backup_users() {
     }
     ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
         --text "♻️ CRIANDO BACKUP DO BANCO DE DADOS"
-    cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root >/dev/null 2>&1
+    cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root >/dev/null 2>&1 || exit
     ShellBot.sendDocument --chat_id ${id_admin} \
         --document "@/root/backupsql/sshplus.sql.bz2" \
         --caption "$(echo -e "♻️ BACKUP DO BANCO DE DADOS ♻️")"
@@ -948,10 +948,10 @@ fun_teste() {
     chmod +x /etc/SSHPlus/userteste/$usuario.sh
     echo "/etc/SSHPlus/userteste/$usuario.sh" | at now + $t_time hour >/dev/null 2>&1
     [[ "$t_time" == '1' ]] && hrs="hora" || hrs="horas"
-    [[ "$(ls /etc/bot/arquivos | wc -l)" != '0' ]] && {
-        for arqv in $(ls /etc/bot/arquivos); do
+    [[ "$(ls /root/backupvps | wc -l)" != '0' ]] && {
+        for arqv in $(ls /root/backupvps); do
             ShellBot.sendDocument --chat_id ${message_from_id[$id]} \
-                --document "@/etc/bot/arquivos/$arqv" \
+                --document "@/root/backupvps/$arqv" \
                 --caption "$(echo -e "✅ Criado com sucesso ✅\n\nUSUARIO: <code>$usuario</code>\nSENHA: <code>1234</code>\n\n⏳ Expira em: $t_time $hrs")" \
                 --parse_mode html
         done
@@ -1955,7 +1955,7 @@ while :; do
                         >$CAD_ARQ
                         break
                     }
-                    [[ "$(ls /etc/bot/arquivos | wc -l)" != '0' ]] && {
+                    [[ "$(ls /root/backupvps | wc -l)" != '0' ]] && {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
                             --text '📥 ARQUIVOS DISPONIVEIS 📥\n\nDeseja baixar? Sim ou Nao?:' \
                             --reply_markup "$(ShellBot.ForceReply)"
@@ -1982,7 +1982,7 @@ while :; do
                         msg_cli="≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\n"
                         msg_cli+="<b>ARQUIVOS PRE-CONFIGURADOS </b>❗\n"
                         msg_cli+="≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\n\n"
-                        for _file in $(ls /etc/bot/arquivos); do
+                        for _file in $(ls /root/backupvps); do
                             i=$(($i + 1))
                             msg_cli+="<b>[$i]</b> - $_file\n"
                         done
@@ -2119,11 +2119,11 @@ while :; do
                             --text "📤 HOSPEDAR ARQUIVOS 📤\n\nEnvie-me o arquivo:" \
                             --reply_markup "$(ShellBot.ForceReply)"
                     elif [[ "${message_text[$id]}" = '2' ]]; then
-                        [[ $(ls /etc/bot/arquivos | wc -l) != '0' ]] && {
+                        [[ $(ls /root/backupvps | wc -l) != '0' ]] && {
                             msg_cli1="≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\n"
                             msg_cli1+="🚀<b> ARQUIVOS HOSPEDADOS </b>\n"
                             msg_cli1+="≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\n\n"
-                            for _file in $(ls /etc/bot/arquivos); do
+                            for _file in $(ls /root/backupvps); do
                                 i=$(($i + 1))
                                 msg_cli1+="<b>[$i]</b> - $_file\n"
                             done
@@ -2157,7 +2157,7 @@ while :; do
                         break
                     } || {
                         echo "opcao $Opc1"
-                        _DirArq=$(ls /etc/bot/arquivos)
+                        _DirArq=$(ls /root/backupvps)
                         i=0
                         unset _Pass
                         while read _Arq; do
@@ -2168,8 +2168,8 @@ while :; do
                             _Pass+="\n${_oP}:${_Arq}"
                         done <<<"${_DirArq}"
                         _file=$(echo -e "${_Pass}" | grep -E "\b$Opc1\b" | cut -d: -f2)
-                        [[ -e /etc/bot/arquivos/$_file ]] && {
-                            rm /etc/bot/arquivos/$_file
+                        [[ -e /root/backupvps/$_file ]] && {
+                            rm /root/backupvps/$_file
                             ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
                                 --text "✅ *Excluido com sucesso* ✅" \
                                 --parse_mode markdown
@@ -2193,11 +2193,11 @@ while :; do
                                 msg='*✅ Arquivo hospedado com sucesso.*\n\n'
                                 msg+="*📤 Informações*\n\n"
                                 msg+="*Nome*: ${message_document_file_name}\n"
-                                msg+="*Salvo em*: /etc/bot/arquivos"
+                                msg+="*Salvo em*: /root/backupvps"
                                 ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
                                     --text "$(echo -e "$msg")" \
                                     --parse_mode markdown
-                                mv /tmp/file/$(ls -1rt /tmp/file | tail -n1) /etc/bot/arquivos/${message_document_file_name}
+                                mv /tmp/file/$(ls -1rt /tmp/file | tail -n1) /root/backupvps/${message_document_file_name}
                                 break
                             }
                         } || {
