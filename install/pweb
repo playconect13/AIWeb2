@@ -1071,7 +1071,6 @@ do
 cd /bin/ppweb/ || exit
 ./verifatt.sh
 cd  || exit;
-service cron restart > /dev/null 2>&1
 verp=$(cat /bin/ppweb/verpweb) > /dev/null 2>&1
 verw=$(cat /bin/ppweb/verweb) > /dev/null 2>&1
 verap=$(cat /bin/ppweb/attpweb) > /dev/null 2>&1
