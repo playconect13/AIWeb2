@@ -344,12 +344,16 @@ echo ""
 [[ $(grep -c "#PasswordAuthentication no" /etc/ssh/sshd_config) != '0' ]] && {
 	sed -i "s/#PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 } > /dev/null
-read -p "DIGITE SUA SENHA ROOT: " pwdroot
+echo ""
+echo -e "\033[1;36mDEFINA UMA NOVA SENHA PARA\033[0m"
+echo -e "\033[1;36mO USUÁRIO ROOT DA VPS E\033[0m"
+echo -e "\033[1;36mPARA O USUÁRIO DO PHPMYADMIN!\033[0m"
+echo ""
+read -p "DIGITE UMA NOVA SENHA ROOT: " pwdroot
 echo "root:$pwdroot" | chpasswd
 echo -e "\n\033[1;36mINICIANDO INSTALAÇÃO \033[1;33mAGUARDE..."
 sleep 3
 clear
-sleep 1
 inst_base
 phpmadm
 pconf
