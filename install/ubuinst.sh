@@ -154,7 +154,7 @@ else
   msg -bar
   apt install software-properties-common
   apt update -y
-  apt figlet -y
+  apt install figlet -y
   add-apt-repository ppa:ondrej/php -y
   apt update -y
   apt upgrade -y
