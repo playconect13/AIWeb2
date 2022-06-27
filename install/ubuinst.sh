@@ -216,7 +216,7 @@ apt install apache2 -y > /dev/null 2>&1
 apt install dirmngr apt-transport-https -y > /dev/null 2>&1
 apt install php8.1 libapache2-mod-php8.1 php8.1-xml php8.1-mcrypt php8.1-curl php8.1-mbstring php8.1-cli -y > /dev/null 2>&1
 systemctl restart apache2 > /dev/null 2>&1
-apt-get install mysql-server -y > /dev/null 2>&1
+apt-get install mariadb-server -y > /dev/null 2>&1
 cd || exit
 echo -e "\n\033[1;36mINSTALANDO O MySQL \033[1;33mAGUARDE...\033[0m"
 mysqladmin -u root password "$pwdroot" > /dev/null 2>&1
