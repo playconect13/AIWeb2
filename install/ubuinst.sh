@@ -369,6 +369,9 @@ install_continue2
 	sed -i "s/#PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 } > /dev/null
 echo ""
+echo -e "WEB GESTOR-SSH" | figlet
+echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo ""
 echo -e "\033[1;36mDEFINA UMA NOVA SENHA PARA\033[0m"
 echo -e "\033[1;36mO USUÁRIO ROOT DA VPS E\033[0m"
 echo -e "\033[1;36mPARA O USUÁRIO DO PHPMYADMIN!\033[0m"
