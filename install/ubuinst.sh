@@ -74,10 +74,14 @@ function stop_install {
   [[ ! -e /bin/pweb ]]  && {
     title "INSTALAÇÃO CANCELADA"
     clear
+    cat /dev/null > ~/.bash_history && history -c
+    rm /bin/ubuinst* > /dev/null 2>&1
     exit;
  } || {
     title "INSTALAÇÃO CANCELADA"
     clear
+    cat /dev/null > ~/.bash_history && history -c
+    rm /bin/ubuinst* > /dev/null 2>&1
     exit;
 }
 }
@@ -92,7 +96,7 @@ function os_system {
   esac
 }
 function dependencias {
-  soft="python bc screen sshpass at nano unzip lsof netstat net-tools dos2unix nload jq curl figlet python3 python-pip cron"
+  soft="python bc screen at nano unzip lsof netstat net-tools dos2unix nload jq curl figlet python3 python-pip"
    for i in $soft; do
     leng="${#i}"
     puntos=$((21 - $leng))
@@ -314,8 +318,6 @@ sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&
 }
 clear
 install_start
-install_continue
-install_continue2
 IP=$(wget -qO- ipv4.icanhazip.com)
 echo "America/Sao_Paulo" > /etc/timezone > /dev/null 2>&1
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
@@ -341,8 +343,12 @@ read -p "DIGITE A CHAVE DE INSTALAÇÃO: " key
             echo "[-] ESSA CHAVE NÃO É VÁLIDA!"
             sleep 3
             clear
+            cat /dev/null > ~/.bash_history && history -c
+            rm /bin/ubuinst* > /dev/null 2>&1
             exit;
           fi
+install_continue
+install_continue2
 [[ $(grep -c "prohibit-password" /etc/ssh/sshd_config) != '0' ]] && {
 	sed -i "s/prohibit-password/yes/g" /etc/ssh/sshd_config
 } > /dev/null
