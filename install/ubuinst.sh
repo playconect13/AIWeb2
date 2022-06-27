@@ -286,14 +286,14 @@ echo "
 @reboot /etc/autostart
 * * * * * /etc/autostart
 0 */12 * * * cd /var/www/html/pages/system/ && bash cron.backup.sh && cd /root
-5 */6 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
+5 */3 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
 * * * * * cd /var/www/html/pages/system/ && bash cron.userteste.sh && cd /root
-2 */6 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
+2 */3 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php
 @daily /usr/bin/php /var/www/html/pages/system/cron.rev.php
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.ssh.php
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.php
-@monthly /usr/bin/php /var/www/html/pages/system/cron.limpeza.php" > cronset
+*/30 * * * * /usr/bin/php /var/www/html/pages/system/hist.online.php" > cronset
 crontab cronset && rm cronset > /dev/null 2>&1
 }
 function fun_swap {
@@ -326,6 +326,23 @@ echo ""
 echo -e "WEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
 echo ""
+chave=$(curl -sSL "raw.githubusercontent.com/nandoslayer/pweb/painel/install/chave") &>/dev/null
+
+read -p "DIGITE A CHAVE DE INSTALAÇÃO: " key
+    
+         if [[ "$key" = "$chave" ]]
+          then
+               echo -e "[*] VALIDANDO A CHAVE DE INSTALAÇÃO"
+                sleep 2
+                echo $key > /bin/chave_inst
+                echo -e "[*] CHAVE ACEITA"
+                sleep 2
+            else
+            echo "[-] ESSA CHAVE NÃO É VÁLIDA!"
+            sleep 3
+            clear
+            exit;
+          fi
 [[ $(grep -c "prohibit-password" /etc/ssh/sshd_config) != '0' ]] && {
 	sed -i "s/prohibit-password/yes/g" /etc/ssh/sshd_config
 } > /dev/null

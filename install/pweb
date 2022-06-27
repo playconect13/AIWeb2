@@ -300,14 +300,14 @@ echo "
 @reboot /etc/autostart
 * * * * * /etc/autostart
 0 */12 * * * cd /var/www/html/pages/system/ && bash cron.backup.sh && cd /root
-5 */6 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
+5 */3 * * * cd /var/www/html/pages/system/ && /usr/bin/php cron.backup.php && cd /root
 * * * * * cd /var/www/html/pages/system/ && bash cron.userteste.sh && cd /root
-2 */6 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
+2 */3 * * * cd /var/www/html/pages/system/ && bash cron.autobackup.sh && cd /root
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php
 @daily /usr/bin/php /var/www/html/pages/system/cron.rev.php
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.ssh.php
 * * * * * /usr/bin/php /var/www/html/pages/system/cron.php
-@monthly /usr/bin/php /var/www/html/pages/system/cron.limpeza.php" > cronset
+*/30 * * * * /usr/bin/php /var/www/html/pages/system/hist.online.php" > cronset
 crontab cronset && rm cronset > /dev/null 2>&1
 ##################################
 clear
@@ -322,7 +322,6 @@ sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/admin/login.php > /dev/null 2>&
 sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/index.php > /dev/null 2>&1
 sed -i "s;EMPRESA;$empresaatual;g" /var/www/html/apps/termos.php > /dev/null 2>&1
 echo ""
-service apache2 restart > /dev/null 2>&1
 echo -e "\E[44;1;32m    PAINELWEB ATUALIZADO COM SUCESSO     \E[0m"
 echo ""
 echo -e "PAINELWEB GESTOR-SSH" | figlet
@@ -335,6 +334,8 @@ echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m):
 echo ""
 echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar ao \033[1;32mPWEB! \033[0m"; read
 cat /dev/null > ~/.bash_history && history -c
+service cron restart > /dev/null 2>&1
+systemctl restart apache2 > /dev/null 2>&1
 clear
 pweb
 exit;
@@ -461,7 +462,6 @@ fun_att_api () {
   	senhassh=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
-	wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/botpag -O /bin/ppweb/botpag > /dev/null 2>&1
 	chmod 777 -R /bin/ppweb > /dev/null 2>&1
 	ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
   	sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
@@ -554,7 +554,7 @@ chave=$(curl -sSL "raw.githubusercontent.com/nandoslayer/pweb/painel/install/cha
   if [[ ! -f /bin/ppweb/botpag/chave_inst ]]
   then
 
-read -p "DIGITE A CHAVE DE INSTALÇÃO: " key
+read -p "DIGITE A CHAVE DE INSTALAÇÃO: " key
     
          if [[ "$key" = "$chave" ]]
           then
@@ -793,8 +793,7 @@ echo -e "\E[44;1;37m            GERENCIAR BOT PWEB               \E[0m\n"
 echo -e "             \033[1;33m[\033[1;31m!\033[1;33m] \033[1;31mATENÇÃO \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[1;32m"
 echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mGERENCIAR BOTPWEB $stsbot\033[0m"
-echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mGERENCIAR BOTPAG $stsbot2\033[0m"
-echo -e "\033[1;31m[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOTs\033[0m"
+echo -e "\033[1;31m[\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mATUALIZAR BOT\033[0m"
 echo -e "\033[1;31m[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
 echo -e "\033[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo ""
@@ -805,10 +804,6 @@ fun_botOnOff
 exit;
 ;;
 2|02)
-fun_botpag_api
-exit;
-;;
-3|03)
 fun_att_api
 exit;
 ;;
