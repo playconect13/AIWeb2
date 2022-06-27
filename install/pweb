@@ -454,19 +454,12 @@ fun_att_api () {
   echo -e "\033[1;31mAGUARDE \033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
   sleep 3
   clear
-  screen -r -S "botpag" -X quit > /dev/null 2>&1
   screen -r -S "bot_painel" -X quit > /dev/null 2>&1
   screen -wipe 1>/dev/null 2>/dev/null
 	sleep 2
-	ipserv=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
-  	senhassh=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/apibot -O /bin/ppweb/apibot > /dev/null 2>&1
     wget -qO- https://github.com/nandoslayer/pweb/raw/painel/install/bot -O /bin/ppweb/bot > /dev/null 2>&1
 	chmod 777 -R /bin/ppweb > /dev/null 2>&1
-	ipserv2=$(cat /bin/ppweb/botpag|grep "ip_server=" | awk -F = '{print $2}')
-  	sed -i "s/ip_server=$ipserv2/ip_server="$ipserv"/" /bin/ppweb/botpag
-  	senhassh2=$(cat /bin/ppweb/botpag|grep "senha_server=" | awk -F = '{print $2}')
-  	sed -i "s/senha_server=$senhassh2/senha_server="$senhassh"/" /bin/ppweb/botpag
   cd $HOME || exit
   echo ""
   echo -e "\033[1;36mBOT ATUALIZADO COM SUCESSO!\033[1;37m"
