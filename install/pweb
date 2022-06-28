@@ -293,6 +293,9 @@ sleep 2
 if [[ -e "/var/www/html/pages/system/pass.php" ]]; then
 sed -i "s;1020;$senha;g" /var/www/html/pages/system/pass.php > /dev/null 2>&1
 fi
+if [[ -e "/var/www/html/lib/Database/Connection.php" ]]; then
+sed -i "s;1020;$senha;g" /var/www/html/lib/Database/Connection.php > /dev/null 2>&1
+fi
 ##################################
 clear
 crontab -l > cronset > /dev/null 2>&1
