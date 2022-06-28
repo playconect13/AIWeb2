@@ -96,7 +96,7 @@ function os_system {
   esac
 }
 function dependencias {
-  soft="python bc screen at nano unzip lsof netstat net-tools dos2unix nload jq curl python3 python-pip"
+  soft="python bc screen at nano unzip lsof netstat net-tools dos2unix nload jq python3 python-pip"
    for i in $soft; do
     leng="${#i}"
     puntos=$((21 - $leng))
@@ -155,6 +155,7 @@ else
   apt install software-properties-common
   apt update -y
   apt install figlet -y
+  apt install curl -y
   add-apt-repository ppa:ondrej/php -y
   apt update -y
   apt upgrade -y
