@@ -315,6 +315,7 @@ function fun_swap {
 }
 function tst_bkp {
 cd || exit
+sed -i "s;1020;$pwdroot;g" /var/www/html/lib/Database/Connection.php > /dev/null 2>&1
 sed -i "s;49875103u;$pwdroot;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 sed -i "s;localhost;$IP;g" /var/www/html/pages/system/config.php > /dev/null 2>&1
 }
