@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 28/06/2022 às 18:37
+-- Tempo de geração: 29/06/2022 às 20:22
 -- Versão do servidor: 10.1.48-MariaDB-0ubuntu0.18.04.1
 -- Versão do PHP: 8.1.7
 
@@ -114,8 +114,8 @@ CREATE TABLE `servidores` (
   `FLAG` varchar(20) NOT NULL DEFAULT 'br.png',
   `ServerIP` varchar(100) NOT NULL,
   `CheckUser` varchar(200) NOT NULL,
-  `ServerPort` int(11) NOT NULL DEFAULT '22',
-  `SSLPort` int(11) NOT NULL DEFAULT '443',
+  `ServerPort` varchar(5) NOT NULL DEFAULT '22',
+  `SSLPort` varchar(5) NOT NULL DEFAULT '443',
   `USER` varchar(20) NOT NULL,
   `PASS` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -125,8 +125,8 @@ CREATE TABLE `servidores` (
 --
 
 INSERT INTO `servidores` (`id`, `Name`, `TYPE`, `FLAG`, `ServerIP`, `CheckUser`, `ServerPort`, `SSLPort`, `USER`, `PASS`) VALUES
-(1, 0xe29aa1204d4555205345525649444f5220303120e29aa1, 'premium', 'br.png', 'meudominio.xyz', 'http://meudominio.xyz:8080/checkUser', 22, 443, '', ''),
-(2, 0xe29aa1204d4555205345525649444f5220303220e29aa1, 'premium', 'br.png', 'meudominio.xyz', 'http://meudominio.xyz:8080/checkUser', 22, 443, '', '');
+(1, 0xe29aa1204d4555205345525649444f5220303120e29aa1, 'premium', 'br.png', 'meudominio.xyz', 'http://meudominio.xyz:8080/checkUser', '22', '443', '', ''),
+(2, 0xe29aa1204d4555205345525649444f5220303220e29aa1, 'premium', 'br.png', 'meudominio.xyz', 'http://meudominio.xyz:8080/checkUser', '22', '443', '', '');
 
 -- --------------------------------------------------------
 
