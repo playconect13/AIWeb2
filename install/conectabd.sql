@@ -72,14 +72,14 @@ CREATE TABLE `payloads` (
 --
 
 INSERT INTO `payloads` (`id`, `Name`, `FLAG`, `Payload`, `SNI`, `TlsIP`, `ProxyIP`, `ProxyPort`, `Info`) VALUES
-(1, 0xf09f929c205649564f20434c4f554420f09f929c, 'vivo', 'GET wss://api.bitso.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: Websocket[crlf]Connection: Keep-Alive[crlf]Connection: Keep-Alive[crlf][crlf]', 'api.bitso.com', '172.64.195.2', '', '443', 'tlsws'),
-(2, 0xf09f929c205649564f204a4f474f5320f09f929c, 'vivo', 'GET wss://support.pokemon.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: Websocket[crlf]Connection: Keep-Alive[crlf]Connection: Keep-Alive[crlf][crlf]', 'support.pokemon.com', '172.64.130.2', '', '443', 'tlsws'),
-(3, 0xf09f92992054494d20434c4f554420f09f9299, 'tim', 'GET wss://static.r4you.co  HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'static.r4you.co', 'static.r4you.co', '', '443', 'tlsws'),
-(4, 0xf09f92992054494d205241494f20f09f9299, 'tim', 'GET wss://static.r4you.co  HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'static.r4you.co', '104.26.5.175', '', '443', 'tlsws'),
-(5, 0xe29da4efb88f20434c41524f20535045454420e29da4efb88f, 'claro', 'GET wss://ct.livestream.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'ct.livestream.com', 'ct.livestream.com', '', '443', 'tlsws'),
-(6, 0xe29da4efb88f20434c41524f20464c495820e29da4efb88f, 'claro', 'GET wss://lp.livestream.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'lp.livestream.com', 'lp.livestream.com', '', '443', 'tlsws'),
-(7, 0xf09f929b204f49204641535420f09f929b, 'oi', 'GET ws://www.hbogo.com.br HTTP/1.1\nHost: [app_host]\nUpgrade: ws\n\n', 'www.hbogo.com.br', 'www.hbogo.com.br', '', '', 'tlsws'),
-(8, 0xf09f929b204f4920574f524c4420f09f929b, 'oi', 'GET ws://www.hbogo.com.br HTTP/1.1\nHost: [app_host]\nUpgrade: ws\n\n', 'www.hbogo.com.br', '104.16.53.91', '', '', 'tlsws');
+(1, 0xf09f929c205649564f20434c4f554420f09f929c, 'vivo', 'GET wss://api.bitso.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: Websocket[crlf]Connection: Keep-Alive[crlf]Connection: Keep-Alive[crlf][crlf]', 'api.bitso.com', '172.64.195.2', '', '443', 'Tlsws'),
+(2, 0xf09f929c205649564f204a4f474f5320f09f929c, 'vivo', 'GET wss://support.pokemon.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: Websocket[crlf]Connection: Keep-Alive[crlf]Connection: Keep-Alive[crlf][crlf]', 'support.pokemon.com', '172.64.130.2', '', '443', 'Tlsws'),
+(3, 0xf09f92992054494d20434c4f554420f09f9299, 'tim', 'GET wss://static.r4you.co  HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'static.r4you.co', 'static.r4you.co', '', '443', 'Tlsws'),
+(4, 0xf09f92992054494d205241494f20f09f9299, 'tim', 'GET wss://static.r4you.co  HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'static.r4you.co', '104.26.5.175', '', '443', 'Tlsws'),
+(5, 0xe29da4efb88f20434c41524f20535045454420e29da4efb88f, 'claro', 'GET wss://ct.livestream.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'ct.livestream.com', 'ct.livestream.com', '', '443', 'Tlsws'),
+(6, 0xe29da4efb88f20434c41524f20464c495820e29da4efb88f, 'claro', 'GET wss://lp.livestream.com/ HTTP/1.1[crlf]Host: [app_host][crlf]Upgrade: websocket[crlf][crlf]', 'lp.livestream.com', 'lp.livestream.com', '', '443', 'Tlsws'),
+(7, 0xf09f929b204f49204641535420f09f929b, 'oi', 'GET ws://www.hbogo.com.br HTTP/1.1\nHost: [app_host]\nUpgrade: ws\n\n', 'www.hbogo.com.br', 'www.hbogo.com.br', '', '', 'Tlsws'),
+(8, 0xf09f929b204f4920574f524c4420f09f929b, 'oi', 'GET ws://www.hbogo.com.br HTTP/1.1\nHost: [app_host]\nUpgrade: ws\n\n', 'www.hbogo.com.br', '104.16.53.91', '', '', 'Tlsws');
 
 -- --------------------------------------------------------
 
