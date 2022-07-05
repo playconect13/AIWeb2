@@ -328,7 +328,7 @@ dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
 clear
 echo -e "\E[44;1;37m    INSTALANDO PAINEL    \E[0m"
 echo ""
-echo -e "PAINEL WEB A.I" | figlet
+echo -e "WEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 chave=$(curl -sSL "raw.githubusercontent.com/SrCarrara/pweb/painel/install/chave") &>/dev/null
@@ -371,7 +371,7 @@ install_continue2
 	sed -i "s/#PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 } > /dev/null
 echo ""
-echo -e "PAINEL WEB A.I" | figlet
+echo -e "WEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 echo -e "\033[1;36mDEFINA UMA NOVA SENHA PARA\033[0m"
@@ -393,7 +393,7 @@ tst_bkp
 clear
 sed -i "s;upload_max_filesize = 2M;upload_max_filesize = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 sed -i "s;post_max_size = 8M;post_max_size = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
-echo -e "PAINEL WEB A.I" | figlet
+echo -e "PAINELWEB GESTOR-SSH" | figlet
 echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 echo -e "\033[1;32mPAINEL INSTALADO COM SUCESSO!"
