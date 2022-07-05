@@ -138,7 +138,7 @@ cat /dev/null > ~/.bash_history && history -c
 rm /bin/ubuinst* > /dev/null 2>&1
 exit;
 else
-  echo -e 'by: @nandoslayer' >/usr/lib/telegram
+  echo -e 'by: @PainelWebAI' >/usr/lib/telegram
   msg -bar
   echo -e "\e[1;97m           \e[5m\033[1;100m   ATUALIZAÇÃO DO SISTEMA   \033[1;37m"
   msg -bar
@@ -329,7 +329,7 @@ clear
 echo -e "\E[44;1;37m    INSTALANDO PAINEL    \E[0m"
 echo ""
 echo -e "PAINEL WEB A.I" | figlet
-echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 chave=$(curl -sSL "raw.githubusercontent.com/SrCarrara/pweb/painel/install/chave") &>/dev/null
 
@@ -372,7 +372,7 @@ install_continue2
 } > /dev/null
 echo ""
 echo -e "PAINEL WEB A.I" | figlet
-echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 echo -e "\033[1;36mDEFINA UMA NOVA SENHA PARA\033[0m"
 echo -e "\033[1;36mO USUÁRIO ROOT DA VPS E\033[0m"
@@ -394,7 +394,7 @@ clear
 sed -i "s;upload_max_filesize = 2M;upload_max_filesize = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 sed -i "s;post_max_size = 8M;post_max_size = 256M;g" /etc/php/8.1/apache2/php.ini > /dev/null 2>&1
 echo -e "PAINEL WEB A.I" | figlet
-echo -e "                              \033[1;31mBy @nandoslayer\033[1;36m"
+echo -e "                              \033[1;31mBy @PainelWebAI\033[1;36m"
 echo ""
 echo -e "\033[1;32mPAINEL INSTALADO COM SUCESSO!"
 echo ""
@@ -409,7 +409,7 @@ echo -e "\033[1;36m USUÁRIO:\033[1;37m root\033[0m"
 echo -e "\033[1;36m SENHA:\033[1;37m $pwdroot\033[0m"
 echo ""
 echo -e "\033[1;31m \033[1;33mCOMANDO PRINCIPAL: \033[1;32mpweb\033[0m"
-echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@nandoslayer\033[0m"
+echo -e "\033[1;33m MAIS INFORMAÇÕES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@PainelWebAI\033[0m"
 echo ""
 echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar...\033[1;32m! \033[0m"; read
 systemctl restart apache2 > /dev/null 2>&1
