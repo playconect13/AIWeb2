@@ -190,15 +190,15 @@ function install_continue {
 function install_continue2 {
 cd /bin || exit
 rm pweb > /dev/null 2>&1
-wget  https://github.com/WebPremiumAI/aiweb/raw/painel/install/pweb > /dev/null 2>&1
+wget  https://github.com/WebPremiumAI/aiweb/raw/Premium/Instalador/pweb > /dev/null 2>&1
 chmod 777 pweb > /dev/null 2>&1
 clear
 [[ ! -d /bin/ppweb ]] && mkdir /bin/ppweb
 cd /bin/ppweb || exit
 rm *.sh ver* > /dev/null 2>&1
-wget  https://github.com/WebPremiumAI/aiweb/raw/painel/install/verifatt.sh > /dev/null 2>&1
-wget  https://github.com/WebPremiumAI/aiweb/raw/painel/install/verpweb > /dev/null 2>&1
-wget  https://github.com/WebPremiumAI/aiweb/raw/painel/install/verweb > /dev/null 2>&1
+wget  https://github.com/WebPremiumAI/aiweb/raw/Premium/Instalador/verifatt.sh > /dev/null 2>&1
+wget  https://github.com/WebPremiumAI/aiweb/raw/Premium/Instalador/verpweb > /dev/null 2>&1
+wget  https://github.com/WebPremiumAI/aiweb/raw/Premium/Instalador/verweb > /dev/null 2>&1
 verp=$(sed -n '1 p' /bin/ppweb/verpweb| sed -e 's/[^0-9]//ig') &>/dev/null
 verw=$(sed -n '1 p' /bin/ppweb/verweb| sed -e 's/[^0-9]//ig') &>/dev/null
 echo -e "$verp" >/bin/ppweb/attpweb
@@ -246,7 +246,7 @@ curl -sS getcomposer.org/installer | php > /dev/null 2>&1
 mv composer.phar /usr/local/bin/composer > /dev/null 2>&1
 chmod +x /usr/local/bin/composer > /dev/null 2>&1
 cd /var/www/html || exit
-wget  https://github.com/WebPremiumAI/aiweb/raw/painel/install/gestorssh.zip > /dev/null 2>&1
+wget  https://github.com/WebPremiumAI/aiweb/raw/Premium/Instalador/gestorssh.zip > /dev/null 2>&1
 apt-get install unzip > /dev/null 2>&1
 unzip gestorssh.zip > /dev/null 2>&1
 (echo yes; echo yes; echo yes; echo yes) | composer install > /dev/null 2>&1
@@ -337,7 +337,7 @@ echo -e "PAINEL WEB A.I" | figlet
 echo -e "\033[1;37m               ❌ INSTALAÇÃO BLOQUEADA PELO DESENVOLVEDOR!\033[38;5;197m\033[38;5;197m\033[1;37m"
 echo -e "\033[1;37m 🔑 USE A CHAVE GRATUITA ➡️ PainelA.I-FREE ⬅️ OU COMPRE UMA CHAVE PREMIUM!\033[38;5;197m\033[38;5;197m\033[1;37m"
 echo ""
-chave=$(curl -sSL "raw.githubusercontent.com/WebPremiumAI/aiweb/painel/install/chave") &>/dev/null
+chave=$(curl -sSL "raw.githubusercontent.com/WebPremiumAI/aiweb/Premium/Instalador/chave") &>/dev/null
 
 read -p "DIGITE A CHAVE DE INSTALAÇÃO: " key
     
