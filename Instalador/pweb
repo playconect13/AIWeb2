@@ -309,15 +309,15 @@ crontab cronset && rm cronset > /dev/null 2>&1
 ##################################
 clear
 cd || exit
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/empresa > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/home.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/index.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/login.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/admin/home.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/admin/index.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/admin/login.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/apps/index.php > /dev/null 2>&1
-sed -i "s;Painel A.I;$empresaatual;g" /var/www/html/apps/termos.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/empresa > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/home.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/index.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/login.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/admin/home.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/admin/index.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/admin/login.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/apps/index.php > /dev/null 2>&1
+sed -i "s;PAINEL-A.I;$empresaatual;g" /var/www/html/apps/termos.php > /dev/null 2>&1
 echo ""
 echo -e "\E[44;1;32m    PAINELWEB ATUALIZADO COM SUCESSO     \E[0m"
 echo ""
